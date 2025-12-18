@@ -612,6 +612,7 @@
   if (hasAny(["coreOffer", "primaryOutcome", "benefit1", "benefit2", "benefit3", "differentiator"])) completed.add("offer");
   if (hasAny(["idealCustomer","industryNiche","buyingMotivation","awarenessLevel","positioningStatement"])) completed.add("market");
   if (hasAny(["pricingModel","basePrice","salesPerMonth","addonName","addonPrice","addonAttachRate"])) completed.add("pricing");
+  if (hasAny(["biggestRisk","nextAction"])) completed.add("summary");
 
   stepButtons.forEach(btn => {
     const id = btn.getAttribute("data-step");
@@ -744,7 +745,13 @@
       lines.push(offerBlock);
       lines.push("");
     }
-
+    
+    const summaryBlock = buildSummaryText();
+    if (summaryBlock) {
+      lines.push("## Summary & Next Actions");
+      lines.push(summaryBlock);
+      lines.push("");
+    }
     // Later: market/pricing/costs/marketing/operations/goals/summary
 
     return lines.join("\n").trim();
@@ -766,6 +773,9 @@
     } else {
       elPreview.innerHTML = blocks.join("\n");
     }
+    
+    const summaryHtml = buildSummaryHtml();
+    if (summaryHtml) blocks.push(summaryHtml);
 
     // Keep a raw output copy for actions
     if (elOutput) elOutput.value = buildPlanMarkdown();
@@ -794,6 +804,37 @@
       sentence2
     ].filter(Boolean).join("\n\n").trim();
   }
+
+  function buildSummaryText() {
+  const risk = clean(state.biggestRisk);
+  const next = clean(state.nextAction);
+
+  if (!risk && !next) return "";
+
+  const lines = [];
+
+  if (risk) {
+    lines.push(`Primary risk or uncertainty: ${risk}`);
+    lines.push("");
+  }
+
+  if (next) {
+    lines.push(`Immediate next action: **${next}**`);
+  }
+
+  return lines.join("\n").trim();
+}
+
+function buildSummaryHtml() {
+  const md = buildSummaryText();
+  if (!md) return "";
+  return `
+    <section data-preview-section="summary">
+      <h3>Summary & Next Actions</h3>
+      ${mdToHtml(md)}
+    </section>
+  `.trim();
+}
 
   function buildOfferText() {
     const offer = clean(state.coreOffer);
