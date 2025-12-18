@@ -320,6 +320,81 @@
     <button type="button" data-next>Next</button>
   </div>
 </section>
+                // Costs
+    fixedMonthlyCosts: "",
+    variableCostPerSale: "",
+    ownerPayTarget: "",
+    desiredMargin: "",
+
+<!-- SECTION: COSTS -->
+<section class="bpg-section" data-section="costs" hidden>
+  <header class="bpg-section__header">
+    <h2>Costs & Profitability</h2>
+    <p>Understand what it costs to operate and what you actually keep.</p>
+  </header>
+
+  <div class="bpg-fields">
+    <div class="bpg-field">
+      <label for="fixedMonthlyCosts">Fixed monthly costs</label>
+      <input
+        id="fixedMonthlyCosts"
+        name="fixedMonthlyCosts"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        min="0"
+        placeholder="Example: 450"
+        data-bind="fixedMonthlyCosts" />
+      <small>Tools, software, hosting, subscriptions, etc.</small>
+    </div>
+
+    <div class="bpg-field">
+      <label for="variableCostPerSale">Variable cost per sale</label>
+      <input
+        id="variableCostPerSale"
+        name="variableCostPerSale"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        min="0"
+        placeholder="Example: 5"
+        data-bind="variableCostPerSale" />
+      <small>Payment fees, delivery costs, contractor time, etc.</small>
+    </div>
+
+    <div class="bpg-field">
+      <label for="ownerPayTarget">Owner pay target (monthly)</label>
+      <input
+        id="ownerPayTarget"
+        name="ownerPayTarget"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        min="0"
+        placeholder="Example: 3000"
+        data-bind="ownerPayTarget" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="desiredMargin">Desired profit margin % (optional)</label>
+      <input
+        id="desiredMargin"
+        name="desiredMargin"
+        type="number"
+        inputmode="numeric"
+        step="1"
+        min="0"
+        max="100"
+        placeholder="Example: 40"
+        data-bind="desiredMargin" />
+    </div>
+  </div>
+
+  <div class="bpg-section__footer">
+    <button type="button" data-prev>Back</button>
+    <button type="button" data-next>Next</button>
+  </div>
+</section>
 
         <!-- PREVIEW PANEL -->
         <aside class="bpg-panel bpg-panel--preview" aria-label="Live plan preview">
