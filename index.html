@@ -154,6 +154,72 @@
               using the same pattern:
               <section class="bpg-section" data-section="market" hidden>...</section>
             -->
+<!-- SECTION: MARKET -->
+<section class="bpg-section" data-section="market" hidden>
+  <header class="bpg-section__header">
+    <h2>Target Market & Positioning</h2>
+    <p>Define who this is for, what they want, and how you position your offer.</p>
+  </header>
+
+  <div class="bpg-fields">
+    <div class="bpg-field">
+      <label for="idealCustomer">Ideal customer</label>
+      <textarea
+        id="idealCustomer"
+        name="idealCustomer"
+        rows="3"
+        placeholder="Example: A service-based owner doing $3k–$15k/mo who wants clearer pricing and better conversions."
+        data-bind="idealCustomer"></textarea>
+    </div>
+
+    <div class="bpg-field">
+      <label for="industryNiche">Industry / niche</label>
+      <input
+        id="industryNiche"
+        name="industryNiche"
+        type="text"
+        placeholder="Example: home services, coaching, local retail, digital products"
+        data-bind="industryNiche" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="buyingMotivation">Buying motivation (pain or desire)</label>
+      <input
+        id="buyingMotivation"
+        name="buyingMotivation"
+        type="text"
+        placeholder="Example: stop undercharging, get consistent leads, reduce overwhelm"
+        data-bind="buyingMotivation" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="awarenessLevel">Awareness level</label>
+      <select id="awarenessLevel" name="awarenessLevel" data-bind="awarenessLevel">
+        <option value="">Select one…</option>
+        <option value="problem-unaware">Problem-unaware</option>
+        <option value="problem-aware">Problem-aware</option>
+        <option value="solution-aware">Solution-aware</option>
+        <option value="product-aware">Product-aware</option>
+        <option value="most-aware">Most-aware (ready to buy)</option>
+      </select>
+    </div>
+
+    <div class="bpg-field">
+      <label for="positioningStatement">Positioning statement (optional)</label>
+      <textarea
+        id="positioningStatement"
+        name="positioningStatement"
+        rows="3"
+        placeholder="Example: The simplest, most practical pricing tools for small businesses — built to get results fast."
+        data-bind="positioningStatement"></textarea>
+    </div>
+  </div>
+
+  <div class="bpg-section__footer">
+    <button type="button" data-prev>Back</button>
+    <button type="button" data-next>Next</button>
+  </div>
+</section>
 
           </form>
         </section>
