@@ -193,7 +193,521 @@
 
   <!-- JS (later) -->
   <script>
-    // Placeholder: wiring comes next (state -> preview -> localStorage -> exports).
-  </script>
+    <script>
+(() => {
+  // =========================
+  // Config
+  // =========================
+  const STORAGE_KEY = "bpg_state_v1";
+
+  const SECTION_ORDER = [
+    "overview",
+    "offer",
+    "market",
+    "pricing",
+    "costs",
+    "marketing",
+    "operations",
+    "goals",
+    "summary",
+  ];
+
+  // =========================
+  // DOM
+  // =========================
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+  const elForm = $('[data-form]');
+  const elPreview = $('[data-preview]');
+  const elOutput = $('[data-output]');
+  const elStatus = $('[data-status]');
+  const elSteps = $('[data-steps]');
+  const elSectionSelect = $('[data-section-select]');
+
+  const sections = $$('[data-section]');
+  const stepButtons = $$('[data-step]', elSteps);
+
+  // =========================
+  // State
+  // =========================
+  const defaultState = {
+    _meta: {
+      activeSection: "overview",
+      lastSavedAt: null,
+    },
+
+    // Overview
+    businessName: "",
+    businessDesc: "",
+    targetCustomer: "",
+    problemSolved: "",
+
+    // Offer
+    coreOffer: "",
+    primaryOutcome: "",
+    benefit1: "",
+    benefit2: "",
+    benefit3: "",
+    differentiator: "",
+
+    // (Later sections: add fields here as you build them)
+  };
+
+  let state = loadState() || structuredClone(defaultState);
+
+  // =========================
+  // Helpers
+  // =========================
+  function nowISO() {
+    return new Date().toISOString();
+  }
+
+  function setStatus(msg) {
+    if (!elStatus) return;
+    elStatus.textContent = msg;
+  }
+
+  function escapeHtml(str) {
+    return String(str ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function sectionIndex(id) {
+    return SECTION_ORDER.indexOf(id);
+  }
+
+  function clampSection(id) {
+    return SECTION_ORDER.includes(id) ? id : "overview";
+  }
+
+  function getActiveSection() {
+    return clampSection(state._meta.activeSection);
+  }
+
+  function setActiveSection(id) {
+    const next = clampSection(id);
+    state._meta.activeSection = next;
+    syncUIToActiveSection();
+    updateProgressUI();
+    renderPreview();
+    saveState();
+  }
+
+  function showOnlySection(id) {
+    sections.forEach(sec => {
+      const isMatch = sec.getAttribute("data-section") === id;
+      sec.hidden = !isMatch;
+    });
+  }
+
+  function syncUIToActiveSection() {
+    const active = getActiveSection();
+    showOnlySection(active);
+
+    // Update step aria-current
+    stepButtons.forEach(btn => {
+      const isActive = btn.getAttribute("data-step") === active;
+      if (isActive) btn.setAttribute("aria-current", "step");
+      else btn.removeAttribute("aria-current");
+    });
+
+    // Update mobile select
+    if (elSectionSelect) elSectionSelect.value = active;
+  }
+
+  function updateProgressUI() {
+    // Mark completed steps when any field in that section has content
+    const completed = new Set();
+
+    // Simple completion rules (expand later)
+    if (hasAny(["businessName", "businessDesc", "targetCustomer", "problemSolved"])) completed.add("overview");
+    if (hasAny(["coreOffer", "primaryOutcome", "benefit1", "benefit2", "benefit3", "differentiator"])) completed.add("offer");
+
+    stepButtons.forEach(btn => {
+      const id = btn.getAttribute("data-step");
+      btn.toggleAttribute("data-complete", completed.has(id));
+    });
+  }
+
+  function hasAny(keys) {
+    return keys.some(k => String(state[k] ?? "").trim().length > 0);
+  }
+
+  function saveState() {
+    try {
+      state._meta.lastSavedAt = nowISO();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      setStatus("Saved locally");
+    } catch (e) {
+      setStatus("Could not save (storage blocked)");
+    }
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      // Minimal sanity
+      if (!parsed || !parsed._meta) return null;
+      parsed._meta.activeSection = clampSection(parsed._meta.activeSection);
+      return parsed;
+    } catch {
+      return null;
+    }
+  }
+
+  function clearState() {
+    state = structuredClone(defaultState);
+    try { localStorage.removeItem(STORAGE_KEY); } catch {}
+    setStatus("Cleared");
+    syncFormToState();
+    setActiveSection("overview");
+  }
+
+  function syncFormToState() {
+    const bound = $$("[data-bind]", elForm);
+    bound.forEach(el => {
+      const key = el.getAttribute("data-bind");
+      if (!key) return;
+      const v = state[key] ?? "";
+      if (el.type === "checkbox") el.checked = Boolean(v);
+      else el.value = String(v);
+    });
+  }
+
+  // =========================
+  // Input -> State binding
+  // =========================
+  function onInput(e) {
+    const el = e.target;
+    if (!el || !el.hasAttribute("data-bind")) return;
+
+    const key = el.getAttribute("data-bind");
+    if (!key) return;
+
+    const value = el.type === "checkbox" ? el.checked : el.value;
+    state[key] = value;
+
+    setStatus("Not saved yet");
+    renderPreview();
+    updateProgressUI();
+    saveState();
+  }
+
+  // =========================
+  // Navigation
+  // =========================
+  function goNext() {
+    const idx = sectionIndex(getActiveSection());
+    if (idx < SECTION_ORDER.length - 1) setActiveSection(SECTION_ORDER[idx + 1]);
+  }
+
+  function goPrev() {
+    const idx = sectionIndex(getActiveSection());
+    if (idx > 0) setActiveSection(SECTION_ORDER[idx - 1]);
+  }
+
+  function onFormClick(e) {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    if (btn.hasAttribute("data-next")) {
+      e.preventDefault();
+      goNext();
+    }
+    if (btn.hasAttribute("data-prev")) {
+      e.preventDefault();
+      goPrev();
+    }
+  }
+
+  function onStepClick(e) {
+    const btn = e.target.closest("button[data-step]");
+    if (!btn) return;
+    const id = btn.getAttribute("data-step");
+    setActiveSection(id);
+  }
+
+  function onMobileSelect(e) {
+    const id = e.target.value;
+    setActiveSection(id);
+  }
+
+  // =========================
+  // Preview rendering
+  // =========================
+  function buildPlanMarkdown() {
+    const lines = [];
+
+    const overviewBlock = buildOverviewText();
+    if (overviewBlock) {
+      lines.push("# Business Plan");
+      lines.push("");
+      lines.push("## Business Overview");
+      lines.push(overviewBlock);
+      lines.push("");
+    }
+
+    const offerBlock = buildOfferText();
+    if (offerBlock) {
+      lines.push("## Offer & Value Proposition");
+      lines.push(offerBlock);
+      lines.push("");
+    }
+
+    // Later: market/pricing/costs/marketing/operations/goals/summary
+
+    return lines.join("\n").trim();
+  }
+
+  function renderPreview() {
+    if (!elPreview) return;
+
+    const blocks = [];
+
+    const overviewHtml = buildOverviewHtml();
+    if (overviewHtml) blocks.push(overviewHtml);
+
+    const offerHtml = buildOfferHtml();
+    if (offerHtml) blocks.push(offerHtml);
+
+    if (blocks.length === 0) {
+      elPreview.innerHTML = `<p><em>Start typing on the left — your plan will appear here.</em></p>`;
+    } else {
+      elPreview.innerHTML = blocks.join("\n");
+    }
+
+    // Keep a raw output copy for actions
+    if (elOutput) elOutput.value = buildPlanMarkdown();
+  }
+
+  function buildOverviewText() {
+    const name = clean(state.businessName);
+    const desc = clean(state.businessDesc);
+    const customer = clean(state.targetCustomer);
+    const problem = clean(state.problemSolved);
+
+    if (!name && !desc && !customer && !problem) return "";
+
+    // Simple, practical narrative
+    const bits = [];
+    if (name) bits.push(`**${name}**`);
+    if (desc) bits.push(desc);
+
+    let sentence2 = "";
+    if (customer || problem) {
+      sentence2 = `It serves ${customer || "its target customers"} by helping solve ${problem || "a clear problem"}.`;
+    }
+
+    return [
+      bits.join(" — "),
+      sentence2
+    ].filter(Boolean).join("\n\n").trim();
+  }
+
+  function buildOfferText() {
+    const offer = clean(state.coreOffer);
+    const outcome = clean(state.primaryOutcome);
+
+    const b1 = clean(state.benefit1);
+    const b2 = clean(state.benefit2);
+    const b3 = clean(state.benefit3);
+
+    const diff = clean(state.differentiator);
+
+    if (!offer && !outcome && !b1 && !b2 && !b3 && !diff) return "";
+
+    const lines = [];
+    if (offer || outcome) {
+      lines.push(`The core offer is **${offer || "the main offer"}**, designed to help customers **${outcome || "achieve a clear outcome"}**.`);
+      lines.push("");
+    }
+
+    const benefits = [b1, b2, b3].filter(Boolean);
+    if (benefits.length) {
+      lines.push("Key benefits include:");
+      benefits.forEach(x => lines.push(`- ${x}`));
+      lines.push("");
+    }
+
+    if (diff) {
+      lines.push(`Differentiator: ${diff}`);
+    }
+
+    return lines.join("\n").trim();
+  }
+
+  function buildOverviewHtml() {
+    const md = buildOverviewText();
+    if (!md) return "";
+    return `
+      <section data-preview-section="overview">
+        <h3>Business Overview</h3>
+        ${mdToHtml(md)}
+      </section>
+    `.trim();
+  }
+
+  function buildOfferHtml() {
+    const md = buildOfferText();
+    if (!md) return "";
+    return `
+      <section data-preview-section="offer">
+        <h3>Offer & Value Proposition</h3>
+        ${mdToHtml(md)}
+      </section>
+    `.trim();
+  }
+
+  // Tiny markdown-ish to HTML (bold + paragraphs + lists)
+  function mdToHtml(md) {
+    const safe = escapeHtml(md);
+
+    // Lists: lines starting with "- "
+    const lines = safe.split("\n");
+    let html = "";
+    let inList = false;
+
+    const flushListEnd = () => {
+      if (inList) {
+        html += "</ul>";
+        inList = false;
+      }
+    };
+
+    for (const line of lines) {
+      const trimmed = line.trim();
+
+      if (trimmed.startsWith("- ")) {
+        if (!inList) {
+          flushParagraphEnd();
+          html += "<ul>";
+          inList = true;
+        }
+        html += `<li>${boldify(trimmed.slice(2))}</li>`;
+      } else if (trimmed === "") {
+        flushListEnd();
+        flushParagraphEnd(true);
+      } else {
+        flushListEnd();
+        html += `<p>${boldify(trimmed)}</p>`;
+      }
+    }
+
+    flushListEnd();
+    flushParagraphEnd(true);
+    return html;
+
+    function boldify(s) {
+      // **bold**
+      return s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    }
+
+    // no-op paragraph flushing kept for clarity/extendability
+    function flushParagraphEnd() { /* paragraphs are already closed */ }
+  }
+
+  function clean(v) {
+    return String(v ?? "").trim();
+  }
+
+  // =========================
+  // Actions: Copy / Download / Clear
+  // =========================
+  async function copyPlan() {
+    const text = buildPlanMarkdown();
+    if (!text) return alert("Nothing to copy yet.");
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus("Copied to clipboard");
+    } catch {
+      // fallback: select textarea
+      if (elOutput) {
+        elOutput.hidden = false;
+        elOutput.focus();
+        elOutput.select();
+        document.execCommand("copy");
+        elOutput.hidden = true;
+        setStatus("Copied (fallback)");
+      } else {
+        alert("Copy failed (clipboard blocked).");
+      }
+    }
+  }
+
+  function downloadFile(filename, mime, content) {
+    if (!content) return alert("Nothing to download yet.");
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setStatus(`Downloaded ${filename}`);
+  }
+
+  function onActionsClick(e) {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
+
+    const action = btn.getAttribute("data-action");
+    if (action === "copy") copyPlan();
+
+    if (action === "download-txt") {
+      const text = buildPlanMarkdown().replaceAll("# ", "").replaceAll("## ", "").trim();
+      downloadFile("business-plan.txt", "text/plain;charset=utf-8", text);
+    }
+
+    if (action === "download-md") {
+      const md = buildPlanMarkdown();
+      downloadFile("business-plan.md", "text/markdown;charset=utf-8", md);
+    }
+
+    if (action === "clear") {
+      const ok = confirm("Clear all fields? This cannot be undone.");
+      if (ok) clearState();
+    }
+  }
+
+  // =========================
+  // Init
+  // =========================
+  function init() {
+    // Bind events
+    elForm?.addEventListener("input", onInput);
+    elForm?.addEventListener("change", onInput);
+    elForm?.addEventListener("click", onFormClick);
+
+    elSteps?.addEventListener("click", onStepClick);
+    elSectionSelect?.addEventListener("change", onMobileSelect);
+
+    document.body.addEventListener("click", (e) => {
+      const actionsBar = e.target.closest(".bpg-actions");
+      if (actionsBar) onActionsClick(e);
+    });
+
+    // Load state into form + render
+    syncFormToState();
+    syncUIToActiveSection();
+    updateProgressUI();
+    renderPreview();
+
+    // Status
+    if (state._meta.lastSavedAt) setStatus("Saved locally");
+    else setStatus("Not saved yet");
+  }
+
+  init();
+})();
+</script>
 </body>
 </html>
