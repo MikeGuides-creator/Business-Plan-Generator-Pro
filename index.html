@@ -395,6 +395,40 @@
     <button type="button" data-next>Next</button>
   </div>
 </section>
+            
+<!-- SECTION: SUMMARY -->
+<section class="bpg-section" data-section="summary" hidden>
+  <header class="bpg-section__header">
+    <h2>Plan Summary & Next Actions</h2>
+    <p>A clear snapshot of the business and what to do next.</p>
+  </header>
+
+  <div class="bpg-fields">
+    <div class="bpg-field">
+      <label for="biggestRisk">Biggest risk or uncertainty</label>
+      <textarea
+        id="biggestRisk"
+        name="biggestRisk"
+        rows="3"
+        placeholder="Example: Will traffic convert without paid ads?"
+        data-bind="biggestRisk"></textarea>
+    </div>
+
+    <div class="bpg-field">
+      <label for="nextAction">Next concrete action</label>
+      <input
+        id="nextAction"
+        name="nextAction"
+        type="text"
+        placeholder="Example: Publish pricing page and test SEO traffic"
+        data-bind="nextAction" />
+    </div>
+  </div>
+
+  <div class="bpg-section__footer">
+    <button type="button" data-prev>Back</button>
+  </div>
+</section>
 
         <!-- PREVIEW PANEL -->
         <aside class="bpg-panel bpg-panel--preview" aria-label="Live plan preview">
@@ -495,6 +529,11 @@
   buyingMotivation: "",
   awarenessLevel: "",
   positioningStatement: "",
+
+        // Summary
+    biggestRisk: "",
+    nextAction: "",
+
    // (Later sections: add fields here as you build them)
   };
 
