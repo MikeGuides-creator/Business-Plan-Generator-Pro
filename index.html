@@ -223,6 +223,97 @@
 
           </form>
         </section>
+<!-- SECTION: PRICING -->
+<section class="bpg-section" data-section="pricing" hidden>
+  <header class="bpg-section__header">
+    <h2>Pricing & Revenue Model</h2>
+    <p>How you charge, what you charge, and what you expect to sell.</p>
+  </header>
+
+  <div class="bpg-fields">
+    <div class="bpg-field">
+      <label for="pricingModel">Pricing model</label>
+      <select id="pricingModel" name="pricingModel" data-bind="pricingModel">
+        <option value="">Select one…</option>
+        <option value="one-time">One-time purchase</option>
+        <option value="subscription">Subscription</option>
+        <option value="package">Package / bundle</option>
+        <option value="hourly">Hourly</option>
+        <option value="project">Project-based</option>
+        <option value="retainer">Monthly retainer</option>
+      </select>
+    </div>
+
+    <div class="bpg-field">
+      <label for="basePrice">Base price</label>
+      <input
+        id="basePrice"
+        name="basePrice"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        min="0"
+        placeholder="Example: 49.95"
+        data-bind="basePrice" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="salesPerMonth">Expected sales per month</label>
+      <input
+        id="salesPerMonth"
+        name="salesPerMonth"
+        type="number"
+        inputmode="numeric"
+        step="1"
+        min="0"
+        placeholder="Example: 25"
+        data-bind="salesPerMonth" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="addonName">Add-on name (optional)</label>
+      <input
+        id="addonName"
+        name="addonName"
+        type="text"
+        placeholder="Example: Setup call"
+        data-bind="addonName" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="addonPrice">Add-on price (optional)</label>
+      <input
+        id="addonPrice"
+        name="addonPrice"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        min="0"
+        placeholder="Example: 99"
+        data-bind="addonPrice" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="addonAttachRate">Add-on attach rate % (optional)</label>
+      <input
+        id="addonAttachRate"
+        name="addonAttachRate"
+        type="number"
+        inputmode="numeric"
+        step="1"
+        min="0"
+        max="100"
+        placeholder="Example: 20"
+        data-bind="addonAttachRate" />
+      <small>Percent of customers expected to buy the add-on.</small>
+    </div>
+  </div>
+
+  <div class="bpg-section__footer">
+    <button type="button" data-prev>Back</button>
+    <button type="button" data-next>Next</button>
+  </div>
+</section>
 
         <!-- PREVIEW PANEL -->
         <aside class="bpg-panel bpg-panel--preview" aria-label="Live plan preview">
