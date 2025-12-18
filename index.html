@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Business Plan Generator</title>
+</head>
+
+<body>
+  <!-- APP -->
+  <div id="bpg-app">
+
+    <!-- HEADER -->
+    <header class="bpg-header" role="banner">
+      <div class="bpg-header__inner">
+        <h1>Business Plan Generator</h1>
+        <p>Build a clear, practical plan as you type. No fluff. No formatting headaches.</p>
+
+        <!-- status (optional) -->
+        <p class="bpg-status" aria-live="polite" data-status>Not saved yet</p>
+      </div>
+    </header>
+
+    <!-- SECTION NAV -->
+    <nav class="bpg-nav" aria-label="Plan sections">
+      <ol class="bpg-steps" data-steps>
+        <li><button type="button" data-step="overview" aria-current="step">1. Overview</button></li>
+        <li><button type="button" data-step="offer">2. Offer</button></li>
+        <li><button type="button" data-step="market">3. Market</button></li>
+        <li><button type="button" data-step="pricing">4. Pricing</button></li>
+        <li><button type="button" data-step="costs">5. Costs</button></li>
+        <li><button type="button" data-step="marketing">6. Marketing</button></li>
+        <li><button type="button" data-step="operations">7. Operations</button></li>
+        <li><button type="button" data-step="goals">8. Goals</button></li>
+        <li><button type="button" data-step="summary">9. Summary</button></li>
+      </ol>
+
+      <!-- mobile helper (optional; you can show/hide via CSS later) -->
+      <label class="bpg-nav__mobile" for="bpg-section-select">
+        Section
+        <select id="bpg-section-select" data-section-select>
+          <option value="overview">1. Overview</option>
+          <option value="offer">2. Offer</option>
+          <option value="market">3. Market</option>
+          <option value="pricing">4. Pricing</option>
+          <option value="costs">5. Costs</option>
+          <option value="marketing">6. Marketing</option>
+          <option value="operations">7. Operations</option>
+          <option value="goals">8. Goals</option>
+          <option value="summary">9. Summary</option>
+        </select>
+      </label>
+    </nav>
+
+    <!-- MAIN TWO-PANEL LAYOUT -->
+    <main class="bpg-main" role="main">
+      <div class="bpg-layout">
+
+        <!-- INPUTS PANEL -->
+        <section class="bpg-panel bpg-panel--inputs" aria-label="Inputs">
+          <form id="bpg-form" data-form autocomplete="on">
+
+            <!-- SECTION: OVERVIEW -->
+            <section class="bpg-section" data-section="overview">
+              <header class="bpg-section__header">
+                <h2>Business Overview</h2>
+                <p>Define what the business is, who it serves, and the problem you solve.</p>
+              </header>
+
+              <div class="bpg-fields">
+                <div class="bpg-field">
+                  <label for="businessName">Business name</label>
+                  <input id="businessName" name="businessName" type="text" placeholder="Example: MikeGuides" data-bind="businessName" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="businessDesc">Short description</label>
+                  <textarea id="businessDesc" name="businessDesc" rows="3"
+                    placeholder="One or two sentences describing what you do."
+                    data-bind="businessDesc"></textarea>
+                </div>
+
+                <div class="bpg-field">
+                  <label for="targetCustomer">Target customer</label>
+                  <input id="targetCustomer" name="targetCustomer" type="text"
+                    placeholder="Example: service-based small business owners"
+                    data-bind="targetCustomer" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="problemSolved">Primary problem solved</label>
+                  <input id="problemSolved" name="problemSolved" type="text"
+                    placeholder="Example: unclear pricing and inconsistent leads"
+                    data-bind="problemSolved" />
+                </div>
+              </div>
+
+              <div class="bpg-section__footer">
+                <button type="button" data-next>Next</button>
+              </div>
+            </section>
+
+            <!-- SECTION: OFFER -->
+            <section class="bpg-section" data-section="offer" hidden>
+              <header class="bpg-section__header">
+                <h2>Offer & Value Proposition</h2>
+                <p>What you sell and the outcomes it delivers.</p>
+              </header>
+
+              <div class="bpg-fields">
+                <div class="bpg-field">
+                  <label for="coreOffer">Core offer</label>
+                  <input id="coreOffer" name="coreOffer" type="text" placeholder="Example: Interactive pricing tools + guides" data-bind="coreOffer" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="primaryOutcome">Primary outcome</label>
+                  <input id="primaryOutcome" name="primaryOutcome" type="text"
+                    placeholder="Example: price confidently and increase profit"
+                    data-bind="primaryOutcome" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="benefit1">Top benefit #1</label>
+                  <input id="benefit1" name="benefit1" type="text" data-bind="benefit1" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="benefit2">Top benefit #2</label>
+                  <input id="benefit2" name="benefit2" type="text" data-bind="benefit2" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="benefit3">Top benefit #3</label>
+                  <input id="benefit3" name="benefit3" type="text" data-bind="benefit3" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="differentiator">What makes it different (optional)</label>
+                  <input id="differentiator" name="differentiator" type="text"
+                    placeholder="Example: built for real small businesses, not theory"
+                    data-bind="differentiator" />
+                </div>
+              </div>
+
+              <div class="bpg-section__footer">
+                <button type="button" data-prev>Back</button>
+                <button type="button" data-next>Next</button>
+              </div>
+            </section>
+
+            <!-- NOTE:
+              Add the remaining sections (market, pricing, costs, marketing, operations, goals, summary)
+              using the same pattern:
+              <section class="bpg-section" data-section="market" hidden>...</section>
+            -->
+
+          </form>
+        </section>
+
+        <!-- PREVIEW PANEL -->
+        <aside class="bpg-panel bpg-panel--preview" aria-label="Live plan preview">
+          <header class="bpg-preview__header">
+            <h2>Live Plan Preview</h2>
+            <p>This updates as you type. Empty sections stay hidden.</p>
+          </header>
+
+          <!-- Render target -->
+          <article class="bpg-preview" data-preview>
+            <!-- JS will inject section blocks like:
+              <section data-preview-section="overview">...</section>
+            -->
+          </article>
+
+          <!-- Optional: raw output target (for copy/export) -->
+          <textarea class="bpg-output" data-output hidden readonly></textarea>
+        </aside>
+
+      </div>
+    </main>
+
+    <!-- ACTION BAR -->
+    <footer class="bpg-actions" role="contentinfo" aria-label="Actions">
+      <div class="bpg-actions__inner">
+        <button type="button" data-action="copy">Copy Plan</button>
+        <button type="button" data-action="download-txt">Download .txt</button>
+        <button type="button" data-action="download-md">Download .md</button>
+        <button type="button" data-action="clear">Clear All</button>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- JS (later) -->
+  <script>
+    // Placeholder: wiring comes next (state -> preview -> localStorage -> exports).
+  </script>
+</body>
+</html>
