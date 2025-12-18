@@ -490,18 +490,20 @@
   }
 
   function updateProgressUI() {
-    // Mark completed steps when any field in that section has content
-    const completed = new Set();
+  // Mark completed steps when any field in that section has content
+  const completed = new Set();
 
-    // Simple completion rules (expand later)
-    if (hasAny(["businessName", "businessDesc", "targetCustomer", "problemSolved"])) completed.add("overview");
-    if (hasAny(["coreOffer", "primaryOutcome", "benefit1", "benefit2", "benefit3", "differentiator"])) completed.add("offer");
+  // Completion rules
+  if (hasAny(["businessName", "businessDesc", "targetCustomer", "problemSolved"])) completed.add("overview");
+  if (hasAny(["coreOffer", "primaryOutcome", "benefit1", "benefit2", "benefit3", "differentiator"])) completed.add("offer");
+  if (hasAny(["idealCustomer","industryNiche","buyingMotivation","awarenessLevel","positioningStatement"])) completed.add("market");
+  if (hasAny(["pricingModel","basePrice","salesPerMonth","addonName","addonPrice","addonAttachRate"])) completed.add("pricing");
 
-    stepButtons.forEach(btn => {
-      const id = btn.getAttribute("data-step");
-      btn.toggleAttribute("data-complete", completed.has(id));
-    });
-  }
+  stepButtons.forEach(btn => {
+    const id = btn.getAttribute("data-step");
+    btn.toggleAttribute("data-complete", completed.has(id));
+  });
+}
 
   function hasAny(keys) {
     return keys.some(k => String(state[k] ?? "").trim().length > 0);
