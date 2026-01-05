@@ -976,28 +976,27 @@
   }
 
   function renderPreview() {
-    if (!elPreview) return;
+  if (!elPreview) return;
 
-    const blocks = [];
+  const blocks = [];
 
-    const overviewHtml = buildOverviewHtml();
-    if (overviewHtml) blocks.push(overviewHtml);
+  const overviewHtml = buildOverviewHtml();
+  if (overviewHtml) blocks.push(overviewHtml);
 
-    const offerHtml = buildOfferHtml();
-    if (offerHtml) blocks.push(offerHtml);
+  const offerHtml = buildOfferHtml();
+  if (offerHtml) blocks.push(offerHtml);
 
-    if (blocks.length === 0) {
-      elPreview.innerHTML = `<p><em>Start typing on the left — your plan will appear here.</em></p>`;
-    } else {
-      elPreview.innerHTML = blocks.join("\n");
-    }
-    
-    const summaryHtml = buildSummaryHtml();
-    if (summaryHtml) blocks.push(summaryHtml);
+  const summaryHtml = buildSummaryHtml();
+  if (summaryHtml) blocks.push(summaryHtml);
 
-    // Keep a raw output copy for actions
-    if (elOutput) elOutput.value = buildPlanMarkdown();
+  if (blocks.length === 0) {
+    elPreview.innerHTML = `<p><em>Start typing on the left — your plan will appear here.</em></p>`;
+  } else {
+    elPreview.innerHTML = blocks.join("\n");
   }
+
+  if (elOutput) elOutput.value = buildPlanMarkdown();
+}
 
   function buildOverviewText() {
     const name = clean(state.businessName);
