@@ -1403,10 +1403,10 @@ function buildSummaryHtml() {
 
     // Load state into form + render
     syncFormToState();
-    syncUIToActiveSection();
-    updateProgressUI();
-    showWelcomeIfNeeded();
-    renderPreview();
+syncUIToActiveSection();
+updateProgressUI();
+renderPreview();
+showWelcomeIfNeeded();
 
     // Status
     if (state._meta.lastSavedAt) setStatus("Saved locally");
