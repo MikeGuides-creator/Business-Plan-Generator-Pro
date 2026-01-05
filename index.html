@@ -802,6 +802,75 @@
   // =========================
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+// =========================
+// FTUE (First-time user experience)
+// =========================
+const FTUE_KEY = "bpg_ftue_v1_seen";
+const elWelcome = document.getElementById("bpg-welcome");
+
+function isFirstRun() {
+  try { return localStorage.getItem(FTUE_KEY) !== "1"; }
+  catch { return true; }
+}
+
+function hideWelcomeForever() {
+  try { localStorage.setItem(FTUE_KEY, "1"); } catch {}
+  if (elWelcome) elWelcome.hidden = true;
+}
+
+function showWelcomeIfNeeded() {
+  if (!elWelcome) return;
+
+  // If the user already has saved content, don’t show it (even if FTUE not set)
+  const hasAnyData =
+    hasAny(["businessName","businessDesc","targetCustomer","problemSolved"]) ||
+    hasAny(["coreOffer","primaryOutcome","benefit1","benefit2","benefit3","differentiator"]) ||
+    hasAny(["biggestRisk","nextAction"]);
+
+  if (!isFirstRun() || hasAnyData) {
+    elWelcome.hidden = true;
+  } else {
+    elWelcome.hidden = false;
+  }
+}
+
+function focusFirstFieldInActiveSection() {
+  const active = getActiveSection();
+  const sec = document.querySelector(`[data-section="${active}"]`);
+  if (!sec) return;
+  const first = sec.querySelector("input, textarea, select");
+  if (first) {
+    first.focus({ preventScroll: true });
+    first.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
+// One handler for all welcome buttons
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-ftue]");
+  if (!btn) return;
+
+  const action = btn.getAttribute("data-ftue");
+
+  if (action === "dismiss") {
+    hideWelcomeForever();
+  }
+
+  if (action === "start") {
+    hideWelcomeForever();
+    setActiveSection("overview");
+    setTimeout(focusFirstFieldInActiveSection, 50);
+  }
+
+  if (action === "see") {
+    hideWelcomeForever();
+    // If you want, jump to Summary preview:
+    // setActiveSection("summary");
+    // Or simply scroll preview into view:
+    const previewPanel = document.querySelector(".bpg-panel--preview");
+    if (previewPanel) previewPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+});
 
   const elForm = $('[data-form]');
   const elPreview = $('[data-preview]');
