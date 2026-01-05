@@ -3,6 +3,1250 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TEST – Business Plan Generator</title>
+<style>
+  :root{
+    --mg-blue:#2563eb;
+    --mg-green:#22c55e;
+    --mg-bg:#f9fafb;
+    --card:#ffffff;
+    --text:#0f172a;
+    --muted:#475569;
+    --border:#e2e8f0;
+    --shadow: 0 10px 25px -12px rgba(2,6,23,.18);
+    --radius: 18px;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+
+<!-- LIVE MARKER: EDITING THE CORRECT FILE -->
+
+<p style="padding:10px;border:2px solid red;">
+  IF YOU SEE THIS, THE FILE SAVED
+</p>
+
+    margin:0;
+    background:var(--mg-bg);
+    color:var(--text);
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+    line-height:1.35;
+  }
+
+  /* Layout container */
+  #bpg-app{ max-width:1200px; margin:0 auto; padding:18px; }
+
+  /* Header */
+  .bpg-header__inner{
+    background: linear-gradient(135deg, rgba(37,99,235,.10), rgba(34,197,94,.08));
+    border:1px solid var(--border);
+    border-radius: var(--radius);
+    padding:18px 18px 14px;
+    box-shadow: var(--shadow);
+  }
+  .bpg-header h1{ margin:0 0 6px; font-size:1.45rem; letter-spacing:-.01em; }
+  .bpg-header p{ margin:0 0 10px; color:var(--muted); }
+  .bpg-status{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 10px;
+    border-radius: 999px;
+    border:1px solid var(--border);
+    background: rgba(255,255,255,.75);
+    font-size:.85rem;
+    color:var(--muted);
+  }
+
+  /* Nav */
+  .bpg-nav{ margin:14px 0; }
+  .bpg-steps{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .bpg-steps button{
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    padding:8px 10px;
+    border-radius: 999px;
+    font-size:.9rem;
+    cursor:pointer;
+    box-shadow: 0 2px 10px rgba(2,6,23,.06);
+  }
+  .bpg-steps button[aria-current="step"]{
+    border-color: rgba(37,99,235,.35);
+    background: rgba(37,99,235,.10);
+  }
+  .bpg-steps button[data-complete]{
+    border-color: rgba(34,197,94,.40);
+    background: rgba(34,197,94,.10);
+  }
+
+  /* Mobile dropdown helper */
+  .bpg-nav__mobile{
+    display:block;
+    margin-top:10px;
+    color:var(--muted);
+    font-size:.9rem;
+  }
+  .bpg-nav__mobile select{
+    width:100%;
+    margin-top:6px;
+    padding:10px 12px;
+    border-radius: 12px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+
+  /* Two-panel layout */
+  .bpg-layout{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:14px;
+    align-items:start;
+  }
+  @media (min-width: 980px){
+    .bpg-layout{ grid-template-columns: 1fr 1fr; }
+    .bpg-nav__mobile{ display:none; }
+  }
+
+  .bpg-panel{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+  .bpg-panel--inputs{ padding:16px; }
+  .bpg-panel--preview{ padding:16px; }
+
+  /* Section */
+  .bpg-section__header h2{
+    margin:0 0 6px;
+    font-size:1.15rem;
+    letter-spacing:-.01em;
+  }
+  .bpg-section__header p{
+    margin:0 0 14px;
+    color:var(--muted);
+  }
+
+  /* Fields */
+  .bpg-fields{ display:grid; gap:12px; }
+  .bpg-field label{
+    display:block;
+    font-weight:600;
+    font-size:.95rem;
+    margin-bottom:6px;
+  }
+  .bpg-field small{
+    display:block;
+    margin-top:6px;
+    color:var(--muted);
+    font-size:.85rem;
+  }
+  input, textarea, select{
+    width:100%;
+    padding:10px 12px;
+    border-radius: 12px;
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--text);
+    outline:none;
+  }
+  input:focus, textarea:focus, select:focus{
+    border-color: rgba(37,99,235,.45);
+    box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+  }
+  textarea{ resize: vertical; min-height: 90px; }
+
+  /* Section footer buttons */
+  .bpg-section__footer{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+  }
+  .bpg-section__footer button{
+    border:1px solid var(--border);
+    background:#fff;
+    padding:10px 12px;
+    border-radius: 12px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  .bpg-section__footer button[data-next]{
+    border-color: rgba(37,99,235,.35);
+    background: rgba(37,99,235,.10);
+  }
+
+  /* Preview */
+  .bpg-preview__header h2{ margin:0 0 6px; font-size:1.15rem; }
+  .bpg-preview__header p{ margin:0 0 14px; color:var(--muted); }
+  .bpg-preview section{
+    border:1px solid var(--border);
+    border-radius: 14px;
+    padding:12px 12px 10px;
+    margin:0 0 10px;
+    background: rgba(248,250,252,.75);
+  }
+  .bpg-preview h3{ margin:0 0 8px; font-size:1rem; }
+  .bpg-preview p{ margin:0 0 10px; color:#0b1220; }
+  .bpg-preview ul{ margin:0 0 10px 18px; }
+  .bpg-preview li{ margin:4px 0; }
+
+  /* Action bar */
+  .bpg-actions{
+    position: sticky;
+    bottom: 10px;
+    margin-top: 14px;
+  }
+  .bpg-actions__inner{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    padding:12px;
+    background: rgba(255,255,255,.82);
+    border:1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(8px);
+  }
+  .bpg-actions button{
+    border:1px solid var(--border);
+    background:#fff;
+    padding:10px 12px;
+    border-radius: 12px;
+    cursor:pointer;
+    font-weight:800;
+  }
+  .bpg-actions button[data-action="copy"]{
+    border-color: rgba(34,197,94,.40);
+    background: rgba(34,197,94,.10);
+  }
+</style>
+</head>
+
+<body>
+<!-- LIVE MARKER: REAL FILE 2026-01-05 -->
+
+  <!-- APP -->
+  <div id="bpg-app">
+
+    <!-- HEADER -->
+    <header class="bpg-header" role="banner">
+      <div class="bpg-header__inner">
+        <h1>Business Plan Generator</h1>
+        <p>Build a clear, practical plan as you type. No fluff. No formatting headaches.</p>
+
+        <!-- status (optional) -->
+        <p class="bpg-status" aria-live="polite" data-status>Not saved yet</p>
+      </div>
+    </header>
+
+    <!-- SECTION NAV -->
+    <nav class="bpg-nav" aria-label="Plan sections">
+      <ol class="bpg-steps" data-steps>
+        <li><button type="button" data-step="overview" aria-current="step">1. Overview</button></li>
+        <li><button type="button" data-step="offer">2. Offer</button></li>
+        <li><button type="button" data-step="market">3. Market</button></li>
+        <li><button type="button" data-step="pricing">4. Pricing</button></li>
+        <li><button type="button" data-step="costs">5. Costs</button></li>
+        <li><button type="button" data-step="marketing">6. Marketing</button></li>
+        <li><button type="button" data-step="operations">7. Operations</button></li>
+        <li><button type="button" data-step="goals">8. Goals</button></li>
+        <li><button type="button" data-step="summary">9. Summary</button></li>
+      </ol>
+
+      <!-- mobile helper (optional; you can show/hide via CSS later) -->
+      <label class="bpg-nav__mobile" for="bpg-section-select">
+        Section
+        <select id="bpg-section-select" data-section-select>
+          <option value="overview">1. Overview</option>
+          <option value="offer">2. Offer</option>
+          <option value="market">3. Market</option>
+          <option value="pricing">4. Pricing</option>
+          <option value="costs">5. Costs</option>
+          <option value="marketing">6. Marketing</option>
+          <option value="operations">7. Operations</option>
+          <option value="goals">8. Goals</option>
+          <option value="summary">9. Summary</option>
+        </select>
+      </label>
+    </nav>
+
+    <!-- MAIN TWO-PANEL LAYOUT -->
+    <main class="bpg-main" role="main">
+      <div class="bpg-layout">
+
+        <!-- INPUTS PANEL -->
+        <section class="bpg-panel bpg-panel--inputs" aria-label="Inputs">
+          <form id="bpg-form" data-form autocomplete="on">
+
+            <!-- SECTION: OVERVIEW -->
+            <section class="bpg-section" data-section="overview">
+              <header class="bpg-section__header">
+                <h2>Business Overview</h2>
+                <p>Define what the business is, who it serves, and the problem you solve.</p>
+              </header>
+
+              <div class="bpg-fields">
+                <div class="bpg-field">
+                  <label for="businessName">Business name</label>
+                  <input id="businessName" name="businessName" type="text" placeholder="Example: MikeGuides" data-bind="businessName" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="businessDesc">Short description</label>
+                  <textarea id="businessDesc" name="businessDesc" rows="3"
+                    placeholder="One or two sentences describing what you do."
+                    data-bind="businessDesc"></textarea>
+                </div>
+
+                <div class="bpg-field">
+                  <label for="targetCustomer">Target customer</label>
+                  <input id="targetCustomer" name="targetCustomer" type="text"
+                    placeholder="Example: service-based small business owners"
+                    data-bind="targetCustomer" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="problemSolved">Primary problem solved</label>
+                  <input id="problemSolved" name="problemSolved" type="text"
+                    placeholder="Example: unclear pricing and inconsistent leads"
+                    data-bind="problemSolved" />
+                </div>
+              </div>
+
+              <div class="bpg-section__footer">
+                <button type="button" data-next>Next</button>
+              </div>
+            </section>
+
+            <!-- SECTION: OFFER -->
+            <section class="bpg-section" data-section="offer" hidden>
+              <header class="bpg-section__header">
+                <h2>Offer & Value Proposition</h2>
+                <p>What you sell and the outcomes it delivers.</p>
+              </header>
+
+              <div class="bpg-fields">
+                <div class="bpg-field">
+                  <label for="coreOffer">Core offer</label>
+                  <input id="coreOffer" name="coreOffer" type="text" placeholder="Example: Interactive pricing tools + guides" data-bind="coreOffer" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="primaryOutcome">Primary outcome</label>
+                  <input id="primaryOutcome" name="primaryOutcome" type="text"
+                    placeholder="Example: price confidently and increase profit"
+                    data-bind="primaryOutcome" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="benefit1">Top benefit #1</label>
+                  <input id="benefit1" name="benefit1" type="text" data-bind="benefit1" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="benefit2">Top benefit #2</label>
+                  <input id="benefit2" name="benefit2" type="text" data-bind="benefit2" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="benefit3">Top benefit #3</label>
+                  <input id="benefit3" name="benefit3" type="text" data-bind="benefit3" />
+                </div>
+
+                <div class="bpg-field">
+                  <label for="differentiator">What makes it different (optional)</label>
+                  <input id="differentiator" name="differentiator" type="text"
+                    placeholder="Example: built for real small businesses, not theory"
+                    data-bind="differentiator" />
+                </div>
+              </div>
+
+              <div class="bpg-section__footer">
+                <button type="button" data-prev>Back</button>
+                <button type="button" data-next>Next</button>
+              </div>
+            </section>
+
+            <!-- NOTE:
+              Add the remaining sections (market, pricing, costs, marketing, operations, goals, summary)
+              using the same pattern:
+              <section class="bpg-section" data-section="market" hidden>...</section>
+            -->
+<!-- SECTION: MARKET -->
+<section class="bpg-section" data-section="market" hidden>
+  <header class="bpg-section__header">
+    <h2>Target Market & Positioning</h2>
+    <p>Define who this is for, what they want, and how you position your offer.</p>
+  </header>
+
+  <div class="bpg-fields">
+    <div class="bpg-field">
+      <label for="idealCustomer">Ideal customer</label>
+      <textarea
+        id="idealCustomer"
+        name="idealCustomer"
+        rows="3"
+        placeholder="Example: A service-based owner doing $3k–$15k/mo who wants clearer pricing and better conversions."
+        data-bind="idealCustomer"></textarea>
+    </div>
+
+    <div class="bpg-field">
+      <label for="industryNiche">Industry / niche</label>
+      <input
+        id="industryNiche"
+        name="industryNiche"
+        type="text"
+        placeholder="Example: home services, coaching, local retail, digital products"
+        data-bind="industryNiche" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="buyingMotivation">Buying motivation (pain or desire)</label>
+      <input
+        id="buyingMotivation"
+        name="buyingMotivation"
+        type="text"
+        placeholder="Example: stop undercharging, get consistent leads, reduce overwhelm"
+        data-bind="buyingMotivation" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="awarenessLevel">Awareness level</label>
+      <select id="awarenessLevel" name="awarenessLevel" data-bind="awarenessLevel">
+        <option value="">Select one…</option>
+        <option value="problem-unaware">Problem-unaware</option>
+        <option value="problem-aware">Problem-aware</option>
+        <option value="solution-aware">Solution-aware</option>
+        <option value="product-aware">Product-aware</option>
+        <option value="most-aware">Most-aware (ready to buy)</option>
+      </select>
+    </div>
+
+    <div class="bpg-field">
+      <label for="positioningStatement">Positioning statement (optional)</label>
+      <textarea
+        id="positioningStatement"
+        name="positioningStatement"
+        rows="3"
+        placeholder="Example: The simplest, most practical pricing tools for small businesses — built to get results fast."
+        data-bind="positioningStatement"></textarea>
+    </div>
+  </div>
+
+  <div class="bpg-section__footer">
+    <button type="button" data-prev>Back</button>
+    <button type="button" data-next>Next</button>
+  </div>
+</section>
+
+              // Pricing
+    pricingModel: "",
+    basePrice: "",
+    salesPerMonth: "",
+    addonName: "",
+    addonPrice: "",
+    addonAttachRate: "",
+
+<!-- SECTION: PRICING -->
+<section class="bpg-section" data-section="pricing" hidden>
+  <header class="bpg-section__header">
+    <h2>Pricing & Revenue Model</h2>
+    <p>How you charge, what you charge, and what you expect to sell.</p>
+  </header>
+
+  <div class="bpg-fields">
+    <div class="bpg-field">
+      <label for="pricingModel">Pricing model</label>
+      <select id="pricingModel" name="pricingModel" data-bind="pricingModel">
+        <option value="">Select one…</option>
+        <option value="one-time">One-time purchase</option>
+        <option value="subscription">Subscription</option>
+        <option value="package">Package / bundle</option>
+        <option value="hourly">Hourly</option>
+        <option value="project">Project-based</option>
+        <option value="retainer">Monthly retainer</option>
+      </select>
+    </div>
+
+    <div class="bpg-field">
+      <label for="basePrice">Base price</label>
+      <input
+        id="basePrice"
+        name="basePrice"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        min="0"
+        placeholder="Example: 49.95"
+        data-bind="basePrice" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="salesPerMonth">Expected sales per month</label>
+      <input
+        id="salesPerMonth"
+        name="salesPerMonth"
+        type="number"
+        inputmode="numeric"
+        step="1"
+        min="0"
+        placeholder="Example: 25"
+        data-bind="salesPerMonth" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="addonName">Add-on name (optional)</label>
+      <input
+        id="addonName"
+        name="addonName"
+        type="text"
+        placeholder="Example: Setup call"
+        data-bind="addonName" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="addonPrice">Add-on price (optional)</label>
+      <input
+        id="addonPrice"
+        name="addonPrice"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        min="0"
+        placeholder="Example: 99"
+        data-bind="addonPrice" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="addonAttachRate">Add-on attach rate % (optional)</label>
+      <input
+        id="addonAttachRate"
+        name="addonAttachRate"
+        type="number"
+        inputmode="numeric"
+        step="1"
+        min="0"
+        max="100"
+        placeholder="Example: 20"
+        data-bind="addonAttachRate" />
+      <small>Percent of customers expected to buy the add-on.</small>
+    </div>
+  </div>
+
+  <div class="bpg-section__footer">
+    <button type="button" data-prev>Back</button>
+    <button type="button" data-next>Next</button>
+  </div>
+</section>
+                // Costs
+    fixedMonthlyCosts: "",
+    variableCostPerSale: "",
+    ownerPayTarget: "",
+    desiredMargin: "",
+
+<!-- SECTION: COSTS -->
+<section class="bpg-section" data-section="costs" hidden>
+  <header class="bpg-section__header">
+    <h2>Costs & Profitability</h2>
+    <p>Understand what it costs to operate and what you actually keep.</p>
+  </header>
+
+  <div class="bpg-fields">
+    <div class="bpg-field">
+      <label for="fixedMonthlyCosts">Fixed monthly costs</label>
+      <input
+        id="fixedMonthlyCosts"
+        name="fixedMonthlyCosts"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        min="0"
+        placeholder="Example: 450"
+        data-bind="fixedMonthlyCosts" />
+      <small>Tools, software, hosting, subscriptions, etc.</small>
+    </div>
+
+    <div class="bpg-field">
+      <label for="variableCostPerSale">Variable cost per sale</label>
+      <input
+        id="variableCostPerSale"
+        name="variableCostPerSale"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        min="0"
+        placeholder="Example: 5"
+        data-bind="variableCostPerSale" />
+      <small>Payment fees, delivery costs, contractor time, etc.</small>
+    </div>
+
+    <div class="bpg-field">
+      <label for="ownerPayTarget">Owner pay target (monthly)</label>
+      <input
+        id="ownerPayTarget"
+        name="ownerPayTarget"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        min="0"
+        placeholder="Example: 3000"
+        data-bind="ownerPayTarget" />
+    </div>
+
+    <div class="bpg-field">
+      <label for="desiredMargin">Desired profit margin % (optional)</label>
+      <input
+        id="desiredMargin"
+        name="desiredMargin"
+        type="number"
+        inputmode="numeric"
+        step="1"
+        min="0"
+        max="100"
+        placeholder="Example: 40"
+        data-bind="desiredMargin" />
+    </div>
+  </div>
+
+  <div class="bpg-section__footer">
+    <button type="button" data-prev>Back</button>
+    <button type="button" data-next>Next</button>
+  </div>
+</section>
+
+<!-- SECTION: SUMMARY -->
+<section class="bpg-section" data-section="summary" hidden>
+  <header class="bpg-section__header">
+    <h2>Plan Summary & Next Actions</h2>
+    <p>A clear snapshot of the business and what to do next.</p>
+  </header>
+
+<section class="bpg-section" data-section="summary">
+  <h1 style="color:red;">SUMMARY TEST</h1>
+  ...
+</section>
+
+  <div class="bpg-fields">
+    <div class="bpg-field">
+      <label for="biggestRisk">Biggest risk or uncertainty</label>
+      <textarea
+        id="biggestRisk"
+        name="biggestRisk"
+        rows="3"
+        placeholder="Example: Will traffic convert without paid ads?"
+        data-bind="biggestRisk"></textarea>
+    </div>
+
+    <div class="bpg-field">
+      <label for="nextAction">Next concrete action</label>
+      <input
+        id="nextAction"
+        name="nextAction"
+        type="text"
+        placeholder="Example: Publish pricing page and test SEO traffic"
+        data-bind="nextAction" />
+    </div>
+  </div>
+
+  <div class="bpg-section__footer">
+    <button type="button" data-prev>Back</button>
+  </div>
+</section>
+
+        <!-- PREVIEW PANEL -->
+        <aside class="bpg-panel bpg-panel--preview" aria-label="Live plan preview">
+          <header class="bpg-preview__header">
+            <h2>Live Plan Preview</h2>
+            <p>This updates as you type. Empty sections stay hidden.</p>
+          </header>
+
+          <!-- Render target -->
+          <article class="bpg-preview" data-preview>
+            <!-- JS will inject section blocks like:
+              <section data-preview-section="overview">...</section>
+            -->
+          </article>
+
+          <!-- Optional: raw output target (for copy/export) -->
+          <textarea class="bpg-output" data-output hidden readonly></textarea>
+        </aside>
+
+      </div>
+    </main>
+
+    <!-- ACTION BAR -->
+    <footer class="bpg-actions" role="contentinfo" aria-label="Actions">
+      <div class="bpg-actions__inner">
+        <button type="button" data-action="copy">Copy Plan</button>
+        <button type="button" data-action="download-txt">Download .txt</button>
+        <button type="button" data-action="download-md">Download .md</button>
+        <button type="button" data-action="clear">Clear All</button>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- JS (later) -->
+  <script>
+(() => {
+  // =========================
+  // Config
+  // =========================
+  const STORAGE_KEY = "bpg_state_v1";
+
+  const SECTION_ORDER = [
+    "overview",
+    "offer",
+    "market",
+    "pricing",
+    "costs",
+    "marketing",
+    "operations",
+    "goals",
+    "summary",
+  ];
+
+  // =========================
+  // DOM
+  // =========================
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+  const elForm = $('[data-form]');
+  const elPreview = $('[data-preview]');
+  const elOutput = $('[data-output]');
+  const elStatus = $('[data-status]');
+  const elSteps = $('[data-steps]');
+  const elSectionSelect = $('[data-section-select]');
+
+  const sections = $$('[data-section]');
+  const stepButtons = $$('[data-step]', elSteps);
+
+  // =========================
+  // State
+  // =========================
+  const defaultState = {
+    _meta: {
+      activeSection: "overview",
+      lastSavedAt: null,
+    },
+
+    // Overview
+    businessName: "",
+    businessDesc: "",
+    targetCustomer: "",
+    problemSolved: "",
+
+    // Offer
+    coreOffer: "",
+    primaryOutcome: "",
+    benefit1: "",
+    benefit2: "",
+    benefit3: "",
+    differentiator: "",
+
+   // Market
+  idealCustomer: "",
+  industryNiche: "",
+  buyingMotivation: "",
+  awarenessLevel: "",
+  positioningStatement: "",
+   // (Later sections: add fields here as you build them)
+  };
+
+  let state = loadState() || structuredClone(defaultState);
+
+  // =========================
+  // Helpers
+  // =========================
+  function nowISO() {
+    return new Date().toISOString();
+  }
+
+  function setStatus(msg) {
+    if (!elStatus) return;
+    elStatus.textContent = msg;
+  }
+
+  function escapeHtml(str) {
+    return String(str ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function sectionIndex(id) {
+    return SECTION_ORDER.indexOf(id);
+  }
+
+  function clampSection(id) {
+    return SECTION_ORDER.includes(id) ? id : "overview";
+  }
+
+  function getActiveSection() {
+    return clampSection(state._meta.activeSection);
+  }
+
+  function setActiveSection(id) {
+    const next = clampSection(id);
+    state._meta.activeSection = next;
+    syncUIToActiveSection();
+    updateProgressUI();
+    renderPreview();
+    saveState();
+  }
+
+  function showOnlySection(id) {
+  sections.forEach(sec => {
+    const isMatch = sec.getAttribute("data-section") === id;
+    sec.hidden = !isMatch;
+  });
+}
+
+  function syncUIToActiveSection() {
+    const active = getActiveSection();
+    showOnlySection(active);
+
+    // Update step aria-current
+    stepButtons.forEach(btn => {
+      const isActive = btn.getAttribute("data-step") === active;
+      if (isActive) btn.setAttribute("aria-current", "step");
+      else btn.removeAttribute("aria-current");
+    });
+
+    // Update mobile select
+    if (elSectionSelect) elSectionSelect.value = active;
+  }
+
+  function updateProgressUI() {
+  // Mark completed steps when any field in that section has content
+  const completed = new Set();
+
+  // Completion rules
+  if (hasAny(["businessName", "businessDesc", "targetCustomer", "problemSolved"])) completed.add("overview");
+  if (hasAny(["coreOffer", "primaryOutcome", "benefit1", "benefit2", "benefit3", "differentiator"])) completed.add("offer");
+  if (hasAny(["idealCustomer","industryNiche","buyingMotivation","awarenessLevel","positioningStatement"])) completed.add("market");
+  if (hasAny(["pricingModel","basePrice","salesPerMonth","addonName","addonPrice","addonAttachRate"])) completed.add("pricing");
+
+  stepButtons.forEach(btn => {
+    const id = btn.getAttribute("data-step");
+    btn.toggleAttribute("data-complete", completed.has(id));
+  });
+}
+
+  function hasAny(keys) {
+    return keys.some(k => String(state[k] ?? "").trim().length > 0);
+  }
+
+  function saveState() {
+    try {
+      state._meta.lastSavedAt = nowISO();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      setStatus("Saved locally");
+    } catch (e) {
+      setStatus("Could not save (storage blocked)");
+    }
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      // Minimal sanity
+      if (!parsed || !parsed._meta) return null;
+      parsed._meta.activeSection = clampSection(parsed._meta.activeSection);
+      return parsed;
+    } catch {
+      return null;
+    }
+  }
+
+  function clearState() {
+    state = structuredClone(defaultState);
+    try { localStorage.removeItem(STORAGE_KEY); } catch {}
+    setStatus("Cleared");
+    syncFormToState();
+    setActiveSection("overview");
+  }
+
+  function syncFormToState() {
+    const bound = $$("[data-bind]", elForm);
+    bound.forEach(el => {
+      const key = el.getAttribute("data-bind");
+      if (!key) return;
+      const v = state[key] ?? "";
+      if (el.type === "checkbox") el.checked = Boolean(v);
+      else el.value = String(v);
+    });
+  }
+
+  // =========================
+  // Input -> State binding
+  // =========================
+  function onInput(e) {
+    const el = e.target;
+    if (!el || !el.hasAttribute("data-bind")) return;
+
+    const key = el.getAttribute("data-bind");
+    if (!key) return;
+
+    const value = el.type === "checkbox" ? el.checked : el.value;
+    state[key] = value;
+
+    setStatus("Not saved yet");
+    renderPreview();
+    updateProgressUI();
+    saveState();
+  }
+
+  // =========================
+  // Navigation
+  // =========================
+  function goNext() {
+    const idx = sectionIndex(getActiveSection());
+    if (idx < SECTION_ORDER.length - 1) setActiveSection(SECTION_ORDER[idx + 1]);
+  }
+
+  function goPrev() {
+    const idx = sectionIndex(getActiveSection());
+    if (idx > 0) setActiveSection(SECTION_ORDER[idx - 1]);
+  }
+
+  function onFormClick(e) {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    if (btn.hasAttribute("data-next")) {
+      e.preventDefault();
+      goNext();
+    }
+    if (btn.hasAttribute("data-prev")) {
+      e.preventDefault();
+      goPrev();
+    }
+  }
+
+  function onStepClick(e) {
+    const btn = e.target.closest("button[data-step]");
+    if (!btn) return;
+    const id = btn.getAttribute("data-step");
+    setActiveSection(id);
+  }
+  function onMobileSelect(e) {
+    const id = e.target.value;
+    setActiveSection(id);
+  }
+
+  // =========================
+  // Preview rendering
+  // =========================
+  function buildPlanMarkdown() {
+    const lines = [];
+
+    const overviewBlock = buildOverviewText();
+    if (overviewBlock) {
+      lines.push("# Business Plan");
+      lines.push("");
+      lines.push("## Business Overview");
+      lines.push(overviewBlock);
+      lines.push("");
+    }
+
+    const offerBlock = buildOfferText();
+    if (offerBlock) {
+      lines.push("## Offer & Value Proposition");
+      lines.push(offerBlock);
+      lines.push("");
+    }
+
+    // Later: market/pricing/costs/marketing/operations/goals/summary
+
+    return lines.join("\n").trim();
+  }
+
+  function renderPreview() {
+    if (!elPreview) return;
+
+    const blocks = [];
+
+    const overviewHtml = buildOverviewHtml();
+    if (overviewHtml) blocks.push(overviewHtml);
+
+    const offerHtml = buildOfferHtml();
+    if (offerHtml) blocks.push(offerHtml);
+
+    if (blocks.length === 0) {
+      elPreview.innerHTML = `<p><em>Start typing on the left — your plan will appear here.</em></p>`;
+    } else {
+      elPreview.innerHTML = blocks.join("\n");
+    }
+
+    // Keep a raw output copy for actions
+    if (elOutput) elOutput.value = buildPlanMarkdown();
+  }
+
+  function buildOverviewText() {
+    const name = clean(state.businessName);
+    const desc = clean(state.businessDesc);
+    const customer = clean(state.targetCustomer);
+    const problem = clean(state.problemSolved);
+
+    if (!name && !desc && !customer && !problem) return "";
+
+    // Simple, practical narrative
+    const bits = [];
+    if (name) bits.push(`**${name}**`);
+    if (desc) bits.push(desc);
+
+    let sentence2 = "";
+    if (customer || problem) {
+      sentence2 = `It serves ${customer || "its target customers"} by helping solve ${problem || "a clear problem"}.`;
+    }
+
+    return [
+      bits.join(" — "),
+      sentence2
+    ].filter(Boolean).join("\n\n").trim();
+  }
+
+  function buildOfferText() {
+    const offer = clean(state.coreOffer);
+    const outcome = clean(state.primaryOutcome);
+
+    const b1 = clean(state.benefit1);
+    const b2 = clean(state.benefit2);
+    const b3 = clean(state.benefit3);
+
+    const diff = clean(state.differentiator);
+
+    if (!offer && !outcome && !b1 && !b2 && !b3 && !diff) return "";
+
+    const lines = [];
+    if (offer || outcome) {
+      lines.push(`The core offer is **${offer || "the main offer"}**, designed to help customers **${outcome || "achieve a clear outcome"}**.`);
+      lines.push("");
+    }
+
+    const benefits = [b1, b2, b3].filter(Boolean);
+    if (benefits.length) {
+      lines.push("Key benefits include:");
+      benefits.forEach(x => lines.push(`- ${x}`));
+      lines.push("");
+    }
+
+    if (diff) {
+      lines.push(`Differentiator: ${diff}`);
+    }
+
+    return lines.join("\n").trim();
+  }
+
+  function buildOverviewHtml() {
+    const md = buildOverviewText();
+    if (!md) return "";
+    return `
+      <section data-preview-section="overview">
+        <h3>Business Overview</h3>
+        ${mdToHtml(md)}
+      </section>
+    `.trim();
+  }
+
+  function buildOfferHtml() {
+    const md = buildOfferText();
+    if (!md) return "";
+    return `
+      <section data-preview-section="offer">
+        <h3>Offer & Value Proposition</h3>
+        ${mdToHtml(md)}
+      </section>
+    `.trim();
+  }
+
+  // Tiny markdown-ish to HTML (bold + paragraphs + lists)
+  function mdToHtml(md) {
+    const safe = escapeHtml(md);
+
+    // Lists: lines starting with "- "
+    const lines = safe.split("\n");
+    let html = "";
+    let inList = false;
+
+    const flushListEnd = () => {
+      if (inList) {
+        html += "</ul>";
+        inList = false;
+      }
+    };
+
+    for (const line of lines) {
+      const trimmed = line.trim();
+
+      if (trimmed.startsWith("- ")) {
+        if (!inList) {
+          flushParagraphEnd();
+          html += "<ul>";
+          inList = true;
+        }
+        html += `<li>${boldify(trimmed.slice(2))}</li>`;
+      } else if (trimmed === "") {
+        flushListEnd();
+        flushParagraphEnd(true);
+      } else {
+        flushListEnd();
+        html += `<p>${boldify(trimmed)}</p>`;
+      }
+    }
+
+    flushListEnd();
+    flushParagraphEnd(true);
+    return html;
+
+    function boldify(s) {
+      // **bold**
+      return s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    }
+
+    // no-op paragraph flushing kept for clarity/extendability
+    function flushParagraphEnd() { /* paragraphs are already closed */ }
+  }
+
+  function clean(v) {
+    return String(v ?? "").trim();
+  }
+
+  // =========================
+  // Actions: Copy / Download / Clear
+  // =========================
+  async function copyPlan() {
+    const text = buildPlanMarkdown();
+    if (!text) return alert("Nothing to copy yet.");
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus("Copied to clipboard");
+    } catch {
+      // fallback: select textarea
+      if (elOutput) {
+        elOutput.hidden = false;
+        elOutput.focus();
+        elOutput.select();
+        document.execCommand("copy");
+        elOutput.hidden = true;
+        setStatus("Copied (fallback)");
+      } else {
+        alert("Copy failed (clipboard blocked).");
+      }
+    }
+  }
+
+  function downloadFile(filename, mime, content) {
+    if (!content) return alert("Nothing to download yet.");
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setStatus(`Downloaded ${filename}`);
+  }
+
+  function onActionsClick(e) {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
+
+    const action = btn.getAttribute("data-action");
+    if (action === "copy") copyPlan();
+
+    if (action === "download-txt") {
+      const text = buildPlanMarkdown().replaceAll("# ", "").replaceAll("## ", "").trim();
+      downloadFile("business-plan.txt", "text/plain;charset=utf-8", text);
+    }
+
+    if (action === "download-md") {
+      const md = buildPlanMarkdown();
+      downloadFile("business-plan.md", "text/markdown;charset=utf-8", md);
+    }
+
+    if (action === "clear") {
+      const ok = confirm("Clear all fields? This cannot be undone.");
+      if (ok) clearState();
+    }
+  }
+
+  // =========================
+  // Init
+  // =========================
+  function init() {
+    // Bind events
+    elForm?.addEventListener("input", onInput);
+    elForm?.addEventListener("change", onInput);
+    elForm?.addEventListener("click", onFormClick);
+
+// Bulletproof: handle any nav step button click anywhere on the page
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-step]");
+  if (!btn) return;
+  const id = btn.getAttribute("data-step");
+  setActiveSection(id);
+});
+
+document.addEventListener("change", (e) => {
+  const sel = e.target.closest("select[data-section-select]");
+  if (!sel) return;
+  setActiveSection(sel.value);
+});
+
+    elSteps?.addEventListener("click", onStepClick);
+stepButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const id = btn.getAttribute("data-step");
+    setActiveSection(id);
+  });
+});
+
+    elSectionSelect?.addEventListener("change", onMobileSelect);
+
+    document.body.addEventListener("click", (e) => {
+      const actionsBar = e.target.closest(".bpg-actions");
+      if (actionsBar) onActionsClick(e);
+    });
+
+    // Load state into form + render
+    syncFormToState();
+    syncUIToActiveSection();
+    updateProgressUI();
+    renderPreview();
+
+    // Status
+    if (state._meta.lastSavedAt) setStatus("Saved locally");
+    else setStatus("Not saved yet");
+  }
+
+  init();
+})();
+</script>
+</body>
+</html><!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Business Plan Generator</title>
   <style>
   :root{
