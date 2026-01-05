@@ -846,7 +846,7 @@ function focusFirstFieldInActiveSection() {
 }
 
 // One handler for all welcome buttons
-elWelcome?.add.addEventListener("click", (e) => {
+elWelcome.add.addEventListener("click", (e) => {
   const btn = e.target.closest("[data-ftue]");
   if (!btn) return;
 
