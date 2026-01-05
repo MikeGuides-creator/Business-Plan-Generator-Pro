@@ -955,14 +955,13 @@ document.addEventListener("click", (e) => {
   }
 
   function setActiveSection(id) {
-    const next = clampSection(id);
-    state._meta.activeSection = next;
-    syncUIToActiveSection();
-    updateProgressUI();
-    renderPreview();
-    showWelcomeIfNeeded();
-    saveState();
-  }
+  const next = clampSection(id);
+  state._meta.activeSection = next;
+  syncUIToActiveSection();
+  updateProgressUI();
+  renderPreview();
+  saveState();
+}
 
   function showOnlySection(id) {
     sections.forEach(sec => {
@@ -1406,6 +1405,7 @@ function buildSummaryHtml() {
     syncFormToState();
     syncUIToActiveSection();
     updateProgressUI();
+    showWelcomeIfNeeded();
     renderPreview();
 
     // Status
