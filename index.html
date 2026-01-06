@@ -1199,27 +1199,7 @@
     elForm?.addEventListener("click", onFormClick);
 
 // Bulletproof: handle any nav step button click anywhere on the page
-document.addEventListener("click", (e) => {
-  const btn = e.target.closest("button[data-step]");
-  if (!btn) return;
-  const id = btn.getAttribute("data-step");
-  setActiveSection(id);
-});
-
-document.addEventListener("change", (e) => {
-  const sel = e.target.closest("select[data-section-select]");
-  if (!sel) return;
-  setActiveSection(sel.value);
-});
-
     elSteps?.addEventListener("click", onStepClick);
-stepButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    const id = btn.getAttribute("data-step");
-    setActiveSection(id);
-  });
-});
-
     elSectionSelect?.addEventListener("change", onMobileSelect);
 
     document.body.addEventListener("click", (e) => {
