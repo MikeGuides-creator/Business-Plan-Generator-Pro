@@ -2089,32 +2089,31 @@ function focusFirstFieldInActiveSection() {
   }
 }
 
-// One handler for all welcome buttons
-elWelcome.add.addEventListener("click", (e) => {
+// FTUE (Welcome panel) buttons — single handlerr
+document.addEventListener("click", (e) => {
   const btn = e.target.closest("[data-ftue]");
   if (!btn) return;
-  document.addEventListener("click", (e) => {
-  const btn = e.target.closest("[data-ftue]");
-  if (!btn) return;
-
-  console.log("FTUE click fired:", btn.getAttribute("data-ftue")); // <-- ADD THIS
 
   const action = btn.getAttribute("data-ftue");
+  console.log("FTUE click:", action);
 
   if (action === "dismiss") {
     hideWelcomeForever();
+    return;
   }
 
   if (action === "start") {
     hideWelcomeForever();
     setActiveSection("overview");
     setTimeout(focusFirstFieldInActiveSection, 50);
+    return;
   }
 
   if (action === "see") {
     hideWelcomeForever();
     const previewPanel = document.querySelector(".bpg-panel--preview");
-    if (previewPanel) previewPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    previewPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
   }
 });
 
