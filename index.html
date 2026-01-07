@@ -1182,39 +1182,7 @@
       if (ok) clearState();
     }
   }
-
-  // =========================
-  // Init
-  // =========================
-  function init() {
-    // Bind events
-    elForm?.addEventListener("input", onInput);
-    elForm?.addEventListener("change", onInput);
-    elForm?.addEventListener("click", onFormClick);
-
-// Bulletproof: handle any nav step button click anywhere on the page
-    elSteps?.addEventListener("click", onStepClick);
-    elSectionSelect?.addEventListener("change", onMobileSelect);
-
-    document.body.addEventListener("click", (e) => {
-      const actionsBar = e.target.closest(".bpg-actions");
-      if (actionsBar) onActionsClick(e);
-    });
-
-    // Load state into form + render
-    syncFormToState();
-    syncUIToActiveSection();
-    updateProgressUI();
-    renderPreview();
-
-    // Status
-    if (state._meta.lastSavedAt) setStatus("Saved locally");
-    else setStatus("Not saved yet");
-  }
-
-  init();
-})();
-</script>
+  
 </body>
 </html><!doctype html>
 <html lang="en">
@@ -1998,6 +1966,9 @@
   <!-- JS (later) -->
   <script>
 (() => {
+
+  console.log("BPG running ✅");
+  
   // =========================
   // Config
   // =========================
