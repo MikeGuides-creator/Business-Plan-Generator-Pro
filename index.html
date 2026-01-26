@@ -858,12 +858,16 @@
   }
 
   function clearState() {
-    state = structuredClone(defaultState);
-    try { localStorage.removeItem(STORAGE_KEY); } catch {}
-    setStatus("Cleared");
-    syncFormToState();
-    setActiveSection("overview");
-  }
+  state = structuredClone(defaultState);
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(FTUE_KEY); // ← this is Step 2
+  } catch {}
+  setStatus("Cleared");
+  syncFormToState();
+  setActiveSection("overview");
+}
+
 
   // =========================
   // Form Sync
