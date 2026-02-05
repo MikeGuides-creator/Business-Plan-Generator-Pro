@@ -306,6 +306,37 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
   }
 }
+/* ===== STOP HORIZONTAL OVERFLOW (makes right panel visible) ===== */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Make sure the main app can fill the viewport */
+.bpg-main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Force the grid to stay within its container */
+.bpg-layout {
+  width: 100%;
+  max-width: 100%;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+}
+
+/* Critical: allow grid children to shrink instead of forcing overflow */
+.bpg-panel,
+.bpg-panel * {
+  min-width: 0;
+}
+
+/* Also clamp preview content */
+.bpg-preview,
+[data-preview] {
+  max-width: 100%;
+}
 
 </style>
 </head>
