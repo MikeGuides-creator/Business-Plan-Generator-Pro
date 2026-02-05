@@ -81,21 +81,14 @@
     background: rgba(34,197,94,.10);
   }
 
-  /* Mobile dropdown helper */
-  .bpg-nav__mobile{
-    display:block;
-    margin-top:10px;
-    color:var(--muted);
-    font-size:.9rem;
-  }
-  .bpg-nav__mobile select{
-    width:100%;
-    margin-top:6px;
-    padding:10px 12px;
-    border-radius: 12px;
-    border:1px solid var(--border);
-    background:var(--card);
-  }
+  /* Nav: show ONE control at a time */
+.bpg-nav__mobile { display: block; }
+.bpg-nav__desktop { display: none; }
+
+@media (min-width: 960px) {
+  .bpg-nav__mobile { display: none; }
+  .bpg-nav__desktop { display: flex; }
+}
 
  /* === Two-panel desktop layout === */
 .bpg-layout {
