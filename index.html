@@ -90,6 +90,12 @@
   .bpg-nav__desktop { display: flex; }
 }
 
+  /* Hide any stray "Section" label on desktop just in case */
+@media (min-width: 960px) {
+  .bpg-nav__mobile label { display: none; }
+  .bpg-nav__mobile select { display: none; }
+}
+
  /* === Two-panel desktop layout === */
 .bpg-layout {
   display: grid;
