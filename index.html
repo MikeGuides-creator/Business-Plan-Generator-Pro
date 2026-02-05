@@ -119,6 +119,17 @@
   gap: 16px;
 }
 
+  @media (min-width: 960px){
+  .bpg-layout{
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .bpg-panel{
+    min-width: 0;
+  }
+}
+
 /* Switch to two columns on larger screens */
 @media (min-width: 960px) {
   .bpg-layout {
