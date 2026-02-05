@@ -269,6 +269,24 @@
     border-color: rgba(34,197,94,.40);
     background: rgba(34,197,94,.10);
   }
+  /* ===== HARD FORCE LAYOUT (wins over merged CSS) ===== */
+.bpg-layout{
+  display: grid !important;
+  gap: 16px !important;
+  grid-template-columns: 1fr !important; /* default: 1 column */
+}
+
+/* Two columns on wider screens */
+@media (min-width: 700px){
+  .bpg-layout{
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    align-items: start !important;
+  }
+
+  .bpg-panel{ min-width: 0 !important; }
+  .bpg-panel--preview{ display: block !important; }
+}
+
 </style>
 </head>
 
