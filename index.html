@@ -90,6 +90,20 @@
   .bpg-nav__desktop { display: flex; }
 }
 
+  @media (min-width: 960px) {
+  .bpg-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  /* Extra safety: ensure mobile section selector is hidden on desktop */
+  .bpg-nav__mobile,
+  .bpg-nav__mobile label,
+  .bpg-nav__mobile select {
+    display: none !important;
+  }
+}
+
   /* Hide any stray "Section" label on desktop just in case */
 @media (min-width: 960px) {
   .bpg-nav__mobile label { display: none; }
