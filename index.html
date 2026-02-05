@@ -123,6 +123,17 @@
     align-items: start;
   }
 }
+  
+/* Force two-panel grid on desktop */
+.bpg-layout { display: grid; gap: 16px; }
+
+@media (min-width: 960px) {
+  .bpg-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+  .bpg-panel { min-width: 0; }
+}
 
   .bpg-panel{
     background:var(--card);
