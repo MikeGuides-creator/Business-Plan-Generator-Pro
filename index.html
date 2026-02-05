@@ -286,6 +286,26 @@
   .bpg-panel{ min-width: 0 !important; }
   .bpg-panel--preview{ display: block !important; }
 }
+/* Fix preview panel forcing huge column widths */
+.bpg-panel--inputs,
+.bpg-panel--preview {
+  min-width: 0 !important;
+}
+
+.bpg-preview,
+[data-preview],
+.bpg-output {
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow-wrap: anywhere;
+}
+
+/* Force equal columns on desktop */
+@media (min-width: 700px){
+  .bpg-layout{
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  }
+}
 
 </style>
 </head>
