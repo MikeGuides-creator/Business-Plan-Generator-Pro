@@ -16,14 +16,6 @@
     --shadow: 0 10px 25px -12px rgba(2,6,23,.18);
     --radius: 18px;
   }
-  
-  main.bpg-main {
-    width: 100% !important;
-    max-width: 1200px !important;
-    margin: 0 auto !important;
-  }
-
-  .bpg-panel { min-width: 0 !important; }
 
   *{ box-sizing:border-box; }
   html,body{ height:100%; }
@@ -89,42 +81,51 @@
     background: rgba(34,197,94,.10);
   }
 
-/* Nav: show ONE control at a time */
-.bpg-nav__mobile { display: block; }
-.bpg-nav__desktop { display: none; }
+  /* Nav: show ONE control at a time */
+  .bpg-nav__mobile { display: block; }
+  .bpg-nav__desktop { display: none; }
 
-@media (min-width: 800px){
-  .bpg-nav__mobile { display: none !important; }
-  .bpg-nav__desktop { display: flex; }
-}
+  @media (min-width: 800px){
+    .bpg-nav__mobile { display: none !important; }
+    .bpg-nav__desktop { display: flex; }
+  }
 
-/* Two-panel layout */
-.bpg-main{
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 16px;
-}
+  /* ===== Two-panel layout ===== */
+  .bpg-main{
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+  }
 
-.bpg-layout{
-  display: grid;
-  gap: 16px;
-  grid-template-columns: 1fr; /* mobile: one column */
-}
-
-.bpg-panel{ min-width: 0; }
-
-@media (min-width: 800px){
   .bpg-layout{
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: start;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr; /* mobile */
   }
 
-  /* Ensure preview is visible on desktop */
-  .bpg-panel--preview{
-    display: block !important;
+  .bpg-panel{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+    min-width: 0; /* critical for grid */
   }
-}
+  .bpg-panel--inputs{ padding:16px; }
+  .bpg-panel--preview{ padding:16px; }
+
+  @media (min-width: 800px){
+    .bpg-layout{
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+    }
+
+    /* Force preview visible on desktop */
+    .bpg-panel--preview{
+      display: block !important;
+    }
+  }
 
   /* Section */
   .bpg-section__header h2{
@@ -199,6 +200,7 @@
   .bpg-preview p{ margin:0 0 10px; color:#0b1220; }
   .bpg-preview ul{ margin:0 0 10px 18px; }
   .bpg-preview li{ margin:4px 0; }
+  .bpg-preview, [data-preview]{ max-width:100%; }
 
   /* Action bar */
   .bpg-actions{
@@ -229,88 +231,11 @@
     border-color: rgba(34,197,94,.40);
     background: rgba(34,197,94,.10);
   }
-  /* ===== HARD FORCE LAYOUT (wins over merged CSS) ===== */
-.bpg-layout{
-  display: grid !important;
-  gap: 16px !important;
-  grid-template-columns: 1fr !important; /* default: 1 column */
-}
-
-/* Two columns on wider screens */
-@media (min-width: 700px){
-  .bpg-layout{
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    align-items: start !important;
-  }
-
-  .bpg-panel{ min-width: 0 !important; }
-  .bpg-panel--preview{ display: block !important; }
-}
-/* Fix preview panel forcing huge column widths */
-.bpg-panel--inputs,
-.bpg-panel--preview {
-  min-width: 0 !important;
-}
-
-.bpg-preview,
-[data-preview],
-.bpg-output {
-  max-width: 100% !important;
-  width: 100% !important;
-  overflow-wrap: anywhere;
-}
-
-/* Force equal columns on desktop */
-@media (min-width: 700px){
-  .bpg-layout{
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-  }
-}
-/* ===== STOP HORIZONTAL OVERFLOW (makes right panel visible) ===== */
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-/* Make sure the main app can fill the viewport */
-.bpg-main {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Force the grid to stay within its container */
-.bpg-layout {
-  width: 100%;
-  max-width: 100%;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-}
-
-/* Critical: allow grid children to shrink instead of forcing overflow */
-.bpg-panel,
-.bpg-panel * {
-  min-width: 0;
-}
-
-/* Clamp preview content */
-.bpg-preview,
-[data-preview]{
-  max-width: 100%;
-}
-
-/* Show preview panel on desktop */
-@media (min-width: 800px){
-  .bpg-panel--preview{
-    display: block !important;
-  }
-}
-  
 </style>
 </head>
 
 <body>
   
-
   <!-- APP -->
   <div id="bpg-app">
 
