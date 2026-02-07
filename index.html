@@ -390,14 +390,17 @@
   class="mt-3 p-4 rounded-lg bg-slate-100 text-slate-800 border border-slate-200"
   style="white-space:pre-wrap;"
 ></pre>
-
               <div class="bpg-section__footer">
                 <button type="button" data-prev>Back</button>
                 <button type="button" data-next>Next</button>
               </div>
             </section>
             
-<aside class="bpg-panel bpg-panel--preview" aria-label="Live plan preview">
+          </form>
+        </section>
+        
+<!-- PREVIEW PANEL -->
+  <aside class="bpg-panel bpg-panel--preview" aria-label="Live plan preview">
           <header class="bpg-preview__header">
             <h2>Live Plan Preview</h2>
             <p>This updates as you type. Empty sections stay hidden.</p>
@@ -412,16 +415,14 @@
 
           <!-- Optional: raw output target (for copy/export) -->
           <textarea class="bpg-output" data-output hidden readonly></textarea>
-        </aside>
-            
-          </form>
-        </section>
-
-            <!-- NOTE:
+        </aside>          
+        
+        <!-- NOTE:
               Add the remaining sections (market, pricing, costs, marketing, operations, goals, summary)
               using the same pattern:
               <section class="bpg-section" data-section="market" hidden>...</section>
             -->
+        
 <!-- SECTION: MARKET -->
 <section class="bpg-section" data-section="market" hidden>
   <header class="bpg-section__header">
