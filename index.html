@@ -1485,6 +1485,7 @@ window.addEventListener("unhandledrejection", (e) => {
     if (!md) return "";
     return `<section data-preview-section="summary"><h3>Summary & Next Actions</h3>${mdToHtml(md)}</section>`;
   }
+  
 function buildSectionContext(sectionId, state) {
   const ctx = {
     overview: {
