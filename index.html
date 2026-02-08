@@ -1485,6 +1485,88 @@ window.addEventListener("unhandledrejection", (e) => {
     if (!md) return "";
     return `<section data-preview-section="summary"><h3>Summary & Next Actions</h3>${mdToHtml(md)}</section>`;
   }
+function buildSectionContext(sectionId, state) {
+  const ctx = {
+    overview: {
+      businessName: state.businessName,
+      businessDesc: state.businessDesc,
+      targetCustomer: state.targetCustomer,
+      problemSolved: state.problemSolved,
+    },
+    offer: {
+      coreOffer: state.coreOffer,
+      primaryOutcome: state.primaryOutcome,
+      benefit1: state.benefit1,
+      benefit2: state.benefit2,
+      benefit3: state.benefit3,
+      differentiator: state.differentiator,
+    },
+    market: {
+      idealCustomer: state.idealCustomer,
+      industryNiche: state.industryNiche,
+      buyingMotivation: state.buyingMotivation,
+      awarenessLevel: state.awarenessLevel,
+      positioningStatement: state.positioningStatement,
+    },
+    pricing: {
+      pricingModel: state.pricingModel,
+      basePrice: state.basePrice,
+      basePriceWhy: state.basePriceWhy,
+      addOnName: state.addOnName,
+      addOnPrice: state.addOnPrice,
+    },
+    costs: {
+      fixedMonthlyCosts: state.fixedMonthlyCosts,
+      variableCostPerSale: state.variableCostPerSale,
+      ownerPayTarget: state.ownerPayTarget,
+      desiredMargin: state.desiredMargin,
+    },
+    marketing: {
+      leadMagnet: state.leadMagnet,
+      conversionPlan: state.conversionPlan,
+    },
+    operations: {
+      opsWorkflow: state.opsWorkflow,
+      fulfillmentPlan: state.fulfillmentPlan,
+    },
+    goals: {
+      goal30: state.goal30,
+      kpis: state.kpis,
+    },
+    summary: {
+      biggestRisk: state.biggestRisk,
+      nextAction: state.nextAction,
+      riskPlan: state.riskPlan,
+      finalNotes: state.finalNotes,
+    },
+  };
+
+  return ctx[sectionId] || {};
+}
+
+function buildInstructions(sectionId) {
+  const common =
+    "You are helping refine a small business plan section. " +
+    "Be concrete, specific, and practical. Avoid fluff. " +
+    "Return a polished rewrite, then 3 short bullet suggestions.";
+
+  const per = {
+    offer:
+      "Rewrite the offer so it's clearer, more specific, and more compelling. Emphasize outcome and differentiation.",
+    pricing:
+      "Improve pricing clarity: model, anchoring, add-ons, and a short 'why this price' note.",
+    marketing:
+      "Improve the marketing plan: simple funnel, channels, cadence, and one quick win.",
+    operations:
+      "Improve operations: a lightweight workflow, fulfillment, and support plan a solo operator can run.",
+    goals:
+      "Improve goals: measurable 30–90 day targets and KPIs. Keep it realistic.",
+    summary:
+      "Improve summary: crisp next action, risks, and mitigation plan.",
+  };
+
+  return `${common}\n\nSection: ${sectionId}\n${per[sectionId] || ""}`.trim();
+}
   
 async function runAIImprove(sectionId) {
   const btn = document.querySelector(`[data-ai="${sectionId}"]`);
