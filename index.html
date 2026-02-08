@@ -1667,6 +1667,14 @@ async function runAIImprove(sectionId) {
     }
   }
 
+  document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-ai]");
+  if (!btn) return;
+
+  const sectionId = btn.getAttribute("data-ai");
+  runAIImprove(sectionId);
+});
+
   // =========================
   // Initialization
   // =========================
