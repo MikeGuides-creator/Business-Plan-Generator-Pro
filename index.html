@@ -1815,57 +1815,6 @@ async function runAIImprove(sectionId) {
     return (el?.value || "").trim();
   };
 
-  btn.addEventListener("click", async () => {
-    const inputParts = [
-      `Core offer: ${getVal("coreOffer")}`,
-      `Primary outcome: ${getVal("primaryOutcome")}`,
-      `Benefit 1: ${getVal("benefit1")}`,
-      `Benefit 2: ${getVal("benefit2")}`,
-      `Benefit 3: ${getVal("benefit3")}`,
-      `Differentiator: ${getVal("differentiator")}`,
-    ];
-
-    const input = inputParts.join("\n").trim();
-
-    const instructions =
-      "Rewrite this offer so it's clearer, more specific, and more compelling. " +
-      "Return:\n1) A one-sentence offer\n2) 3 bullet benefits\n3) A short differentiator line\n4) A suggested price range (if possible)\n" +
-      "Keep it practical and not hypey.";
-
-    // UI state
-    const originalText = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = "Thinking…";
-    if (out) out.textContent = "Working…";
-
-    try {
-      const res = await fetch("/.netlify/functions/bpg-ai-improve", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ input, instructions }),
-      });
-
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data?.error || `Request failed (${res.status})`);
-
-      const text = (data?.text || "").trim();
-
-      if (out) {
-        out.textContent = text || "(No text returned.)";
-      } else {
-        // fallback if you don't have an output element yet
-        alert(text || "(No text returned.)");
-      }
-    } catch (err) {
-      console.error(err);
-      const msg = err?.message || String(err);
-      if (out) out.textContent = `Error: ${msg}`;
-      else alert(`Error: ${msg}`);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = originalText;
-    }
-  });
 })();
 </script>
            
