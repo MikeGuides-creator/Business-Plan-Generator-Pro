@@ -822,23 +822,9 @@
 
   </div>
 
-  <!-- JS (later) -->
+<!-- JS (later) -->
 <script>
-  alert("SCRIPT RUNNING ✅");
-  console.clear();
-console.log("TOP OF SCRIPT ✅");
-
-window.addEventListener("error", (e) => {
-  console.log("❌ window.error:", e.message, "at", e.filename, e.lineno + ":" + e.colno);
-});
-
-window.addEventListener("unhandledrejection", (e) => {
-  console.log("❌ unhandledrejection:", e.reason);
-});
-
 (function () {
-  console.log("BPG app script started ✅");
-
   // =========================
   // Config
   // =========================
@@ -1013,7 +999,6 @@ window.addEventListener("unhandledrejection", (e) => {
   syncFormToState();
   setActiveSection("overview");
 }
-
 
   // =========================
   // Form Sync
