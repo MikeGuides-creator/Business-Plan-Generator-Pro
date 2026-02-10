@@ -1055,7 +1055,7 @@ function scheduleSave() {
     setStatus("Unsaved changes");
     renderPreview();
     updateProgressUI();
-    saveState();
+    scheduleSave();
   }
 
   // =========================
