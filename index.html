@@ -990,33 +990,36 @@
   }
 
   function clearState() {
-  // Reset the in-memory state
+  // Reset state
   state = structuredClone(defaultState);
   state._meta.activeSection = "overview";
   state._meta.lastSavedAt = null;
 
-  // Wipe persisted state + FTUE
+  // Clear storage
   localStorage.removeItem(STORAGE_KEY);
   localStorage.removeItem(FTUE_KEY);
 
-  // Reset the form UI (inputs/textarea/select)
+  // Clear UI controls
   if (elForm) elForm.reset();
 
-  // Re-render preview to the blank/empty state
-  renderPreview();
+  // Also hard-clear any lingering values (belt + suspenders)
+  document.querySelectorAll("[data-bind]").forEach((el) => {
+    if (el.type === "checkbox") el.checked = false;
+    else el.value = "";
+  });
 
-  // Reset completion UI + status
-  const completed = getCompletedSections();  
-  if (typeof updateCompletionUI === "function") updateCompletionUI();
-  setStatus("Cleared. Start typing to build your plan.");
-
-  // Jump back to overview section
-  showSection("overview");
-
-  // Clear any AI output panes
+  // Clear AI output panes
   document.querySelectorAll("[data-ai-output], [data-offer-ai-output]").forEach((el) => {
     el.textContent = "";
   });
+
+  // Reset completion tracking + preview
+  lastCompletedKey = "";
+  if (elPreview) elPreview.innerHTML = "";
+
+  updateProgressUI();
+  setStatus("Cleared. Start typing to build your plan.");
+  showSection("overview");
 }
 
   // =========================
