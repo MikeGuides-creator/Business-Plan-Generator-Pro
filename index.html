@@ -1033,6 +1033,8 @@
   }
   
 let saveTimer = null;
+let previewTimer = null;
+let lastCompletedKey = ""; // tracks completion changes
 
 function scheduleSave() {
   clearTimeout(saveTimer);
@@ -1042,21 +1044,60 @@ function scheduleSave() {
   }, 250);
 }
 
-  function onInput(e) {
-    const el = e.target;
-    if (!el || !el.hasAttribute("data-bind")) return;
-    
-    const key = el.getAttribute("data-bind");
-    if (!key) return;
-    
-    const value = el.type === "checkbox" ? el.checked : el.value;
-    state[key] = value;
-    
-    setStatus("Unsaved changes");
+// Only refresh preview occasionally to prevent “jumpy typing”
+function schedulePreview() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(() => {
     renderPreview();
-    updateProgressUI();
-    scheduleSave();
+  }, 250);
+}
+
+// Define what “complete” means for each section (tweak if you want)
+function getCompletedSections() {
+  const has = (v) => String(v ?? "").trim().length > 0;
+  const any = (keys) => keys.some((k) => has(state[k]));
+
+  const completed = new Set();
+  if (any(["businessName","businessDesc","targetCustomer","problemSolved"])) completed.add("overview");
+  if (any(["coreOffer","primaryOutcome","benefit1","benefit2","benefit3","differentiator"])) completed.add("offer");
+  if (any(["idealCustomer","industryNiche","buyingMotivation","awarenessLevel","positioningStatement"])) completed.add("market");
+  if (any(["pricingModel","basePrice","basePriceWhy","addOnName","addOnPrice"])) completed.add("pricing");
+  if (any(["fixedMonthlyCosts","variableCostPerSale","ownerPayTarget","desiredMargin"])) completed.add("costs");
+  if (any(["leadMagnet","conversionPlan"])) completed.add("marketing");
+  if (any(["opsWorkflow","fulfillmentPlan"])) completed.add("operations");
+  if (any(["goal30","kpis"])) completed.add("goals");
+  if (any(["biggestRisk","nextAction"])) completed.add("summary");
+
+  return completed;
+}
+
+function completionFingerprint(set) {
+  return Array.from(set).sort().join("|");
+}
+
+function onInput(e) {
+  const el = e.target;
+  if (!el || !el.hasAttribute("data-bind")) return;
+
+  const key = el.getAttribute("data-bind");
+  if (!key) return;
+
+  const value = el.type === "checkbox" ? el.checked : el.value;
+  state[key] = value;
+
+  setStatus("Unsaved changes");
+  updateProgressUI();
+  scheduleSave();
+
+  // Only rebuild preview when completion status changes (or occasionally)
+  const completedNow = getCompletedSections();
+  const fp = completionFingerprint(completedNow);
+
+  if (fp !== lastCompletedKey) {
+    lastCompletedKey = fp;
+    schedulePreview();
   }
+}
 
   // =========================
   // Navigation
