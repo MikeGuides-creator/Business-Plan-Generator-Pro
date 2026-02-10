@@ -1006,6 +1006,7 @@
   renderPreview();
 
   // Reset completion UI + status
+  const completed = getCompletedSections();  
   if (typeof updateCompletionUI === "function") updateCompletionUI();
   setStatus("Cleared. Start typing to build your plan.");
 
