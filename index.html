@@ -990,14 +990,32 @@
   }
 
   function clearState() {
+  // Reset the in-memory state
   state = structuredClone(defaultState);
-  try {
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(FTUE_KEY); // ← this is Step 2
-  } catch {}
-  setStatus("Cleared");
-  syncFormToState();
-  setActiveSection("overview");
+  state._meta.activeSection = "overview";
+  state._meta.lastSavedAt = null;
+
+  // Wipe persisted state + FTUE
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(FTUE_KEY);
+
+  // Reset the form UI (inputs/textarea/select)
+  if (elForm) elForm.reset();
+
+  // Re-render preview to the blank/empty state
+  renderPreview();
+
+  // Reset completion UI + status
+  if (typeof updateCompletionUI === "function") updateCompletionUI();
+  setStatus("Cleared. Start typing to build your plan.");
+
+  // Jump back to overview section
+  showSection("overview");
+
+  // Clear any AI output panes
+  document.querySelectorAll("[data-ai-output], [data-offer-ai-output]").forEach((el) => {
+    el.textContent = "";
+  });
 }
 
   // =========================
