@@ -1048,12 +1048,15 @@ function scheduleSave() {
   }, 250);
 }
 
-// Only refresh preview occasionally to prevent “jumpy typing”
-function schedulePreview() {
-  clearTimeout(previewTimer);
-  previewTimer = setTimeout(() => {
-    renderPreview();
-  }, 250);
+let saveTimer = null;
+
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    saveState();
+    isDirty = false;
+    setStatus("Saved");
+  }, 400);
 }
 
 // Define what “complete” means for each section (tweak if you want)
