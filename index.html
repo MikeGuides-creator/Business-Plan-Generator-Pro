@@ -1079,6 +1079,8 @@ function completionFingerprint(set) {
   return Array.from(set).sort().join("|");
 }
 
+let isDirty = false;
+
 function onInput(e) {
   const el = e.target;
   if (!el || !el.hasAttribute("data-bind")) return;
@@ -1089,18 +1091,15 @@ function onInput(e) {
   const value = el.type === "checkbox" ? el.checked : el.value;
   state[key] = value;
 
-  setStatus("Unsaved changes");
-  updateProgressUI();
-  scheduleSave();
-
-  // Only rebuild preview when completion status changes (or occasionally)
-  const completedNow = getCompletedSections();
-  const fp = completionFingerprint(completedNow);
-
-  if (fp !== lastCompletedKey) {
-    lastCompletedKey = fp;
-    schedulePreview();
+  // Only set “Unsaved changes” once, not every keypress
+  if (!isDirty) {
+    isDirty = true;
+    setStatus("Unsaved changes");
   }
+
+  // Don’t update preview on every keystroke
+  // Don’t spam progress either — let it update when they navigate sections
+  scheduleSave();
 }
 
   // =========================
