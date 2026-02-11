@@ -1115,9 +1115,11 @@ function onInput(e) {
     state._meta.activeSection = next;
     syncUIToActiveSection();
     updateProgressUI();
-    renderPreview();
     showWelcomeIfNeeded();
-    saveState();
+    scheduleSave();
+// only re-render preview when completion changes (your lastCompletedKey logic),
+// OR if you don’t have that yet, do:
+schedulePreview();
   }
 
   function syncUIToActiveSection() {
