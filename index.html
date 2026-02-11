@@ -1112,6 +1112,14 @@ function onInput(e) {
     // OR if you don’t have that yet, do:
     schedulePreview();
   }
+let previewTimer = null;
+
+function schedulePreview() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(() => {
+    renderPreview();
+  }, 150);
+}
 
   function syncUIToActiveSection() {
     const active = getActiveSection();
