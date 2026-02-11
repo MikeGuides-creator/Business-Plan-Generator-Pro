@@ -1039,16 +1039,7 @@
 let saveTimer = null;
 let previewTimer = null;
 let lastCompletedKey = ""; // tracks completion changes
-
-function scheduleSave() {
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => {
-    saveState();
-    setStatus("Saved");
-  }, 250);
-}
-
-let saveTimer = null;
+let isDirty = false;
 
 function scheduleSave() {
   clearTimeout(saveTimer);
