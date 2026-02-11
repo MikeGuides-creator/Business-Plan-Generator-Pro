@@ -1117,9 +1117,9 @@ function onInput(e) {
     updateProgressUI();
     showWelcomeIfNeeded();
     scheduleSave();
-// only re-render preview when completion changes (your lastCompletedKey logic),
-// OR if you don’t have that yet, do:
-schedulePreview();
+    // only re-render preview when completion changes (your lastCompletedKey logic),
+    // OR if you don’t have that yet, do:
+    schedulePreview();
   }
 
   function syncUIToActiveSection() {
