@@ -1073,8 +1073,6 @@ function completionFingerprint(set) {
   return Array.from(set).sort().join("|");
 }
 
-let isDirty = false;
-
 function onInput(e) {
   const el = e.target;
   if (!el || !el.hasAttribute("data-bind")) return;
