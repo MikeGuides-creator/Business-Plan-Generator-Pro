@@ -1745,11 +1745,11 @@ async function runAIImprove(sectionId) {
     const s = buildSummaryHtml();
     if (s) blocks.push(s);
     
-    if (blocks.length === 0) {
-      elPreview.innerHTML = `<p><em>Start typing on the left — your plan will appear here.</em></p>`;
-    } else {
-      elPreview.innerHTML = blocks.join("\n");
-    }
+   if (blocks.length === 0) {
+  elPreview.innerHTML = ""; // stay empty until a section is complete
+} else {
+  elPreview.innerHTML = blocks.join("\n");
+}
     
     if (elOutput) {
       elOutput.value = buildPlanMarkdown();
