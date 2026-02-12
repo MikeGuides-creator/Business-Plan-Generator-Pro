@@ -1869,30 +1869,6 @@ async function runAIImprove(sectionId) {
 })();
   
 </script>
- <script>
-(() => {
-  const $ = (sel, root=document) => root.querySelector(sel);
-
-  // Change these if your button/output use different selectors
-  const btn = $('[data-offer-ai]') || $('#offerAiBtn') || $('button[data-ai="offer"]');
-  const out =
-    $('[data-offer-ai-output]') ||
-    $('#offerAiOutput') ||
-    $('[data-ai-output="offer"]');
-
-  if (!btn) {
-    console.warn("Offer AI: button not found (add data-offer-ai to your button).");
-    return;
-  }
-
-  const getVal = (key) => {
-    // tries name= first, then id=
-    const el = document.querySelector(`[name="${key}"]`) || document.getElementById(key);
-    return (el?.value || "").trim();
-  };
-
-})();
-</script>
            
 </body>
 </html>
