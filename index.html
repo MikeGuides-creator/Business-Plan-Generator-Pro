@@ -1085,10 +1085,9 @@ function onInput(e) {
     isDirty = true;
     setStatus("Unsaved changes");
   }
-
-  // Don’t update preview on every keystroke
-  // Don’t spam progress either — let it update when they navigate sections
-  scheduleSave();
+  
+    scheduleSave();
+    schedulePreview();
 }
 
   // =========================
