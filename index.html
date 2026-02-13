@@ -1222,30 +1222,73 @@ function schedulePreview() {
   }
 
   // Welcome buttons
-  document.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-ftue]");
-    if (!btn) return;
-    
-    const action = btn.getAttribute("data-ftue");
-    
-    if (action === "dismiss") hideWelcomeForever();
-    
-    if (action === "start") {
-      hideWelcomeForever();
-      setActiveSection("overview");
-      setTimeout(() => {
-        const sec = document.querySelector(`[data-section="overview"]`);
-        const first = sec?.querySelector("input, textarea, select");
-        if (first) first.focus({ preventScroll: true });
-      }, 50);
-    }
-    
-    if (action === "see") {
-      hideWelcomeForever();
-      const previewPanel = document.querySelector(".bpg-panel--preview");
-      if (previewPanel) previewPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  });
+  document.addEventListener("click", async (e) => {
+  const btn = e.target.closest("[data-offer-ai]");
+  if (!btn) return;
+
+  const out = document.querySelector("[data-offer-ai-output]");
+
+  // tries name= first, then id=, then data-bind=
+  const getVal = (key) => {
+    const el =
+      document.querySelector(`[name="${key}"]`) ||
+      document.getElementById(key) ||
+      document.querySelector(`[data-bind="${key}"]`);
+    return (el?.value ?? "").toString().trim();
+  };
+
+  const inputParts = [
+    `Core offer: ${getVal("coreOffer")}`,
+    `Primary outcome: ${getVal("primaryOutcome")}`,
+    `Benefit 1: ${getVal("benefit1")}`,
+    `Benefit 2: ${getVal("benefit2")}`,
+    `Benefit 3: ${getVal("benefit3")}`,
+    `Differentiator: ${getVal("differentiator")}`,
+  ];
+
+  const input = inputParts.join("\n").trim();
+
+  // Don’t silently fail when empty
+  const hasMeaningful =
+    getVal("coreOffer") || getVal("primaryOutcome") || getVal("benefit1") || getVal("benefit2") || getVal("benefit3") || getVal("differentiator");
+
+  if (!hasMeaningful) {
+    if (out) out.textContent = "Add at least Core offer or Primary outcome, then click Improve.";
+    return;
+  }
+
+  const instructions =
+    "Rewrite this offer so it's clearer, more specific, and more compelling. " +
+    "Return:\n1) A one-sentence offer\n2) 3 bullet benefits\n3) A short differentiator line\n4) A suggested price range (if possible)\n" +
+    "Keep it practical and not hypey.";
+
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Thinking…";
+  if (out) out.textContent = "Working…";
+
+  try {
+    const res = await fetch("/.netlify/functions/bpg-ai-improve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ input, instructions }),
+    });
+
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data?.error || `Request failed (${res.status})`);
+
+    const text = (data?.text || "").trim();
+    if (out) out.textContent = text || "(No text returned.)";
+    else alert(text || "(No text returned.)");
+  } catch (err) {
+    const msg = err?.message || String(err);
+    if (out) out.textContent = `Error: ${msg}`;
+    else alert(`Error: ${msg}`);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+});
 
   // =========================
   // Preview Builders - Helpers
