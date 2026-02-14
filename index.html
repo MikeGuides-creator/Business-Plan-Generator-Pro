@@ -415,6 +415,49 @@ hr{
   background: linear-gradient(90deg, transparent, rgba(230,220,207,.95), transparent);
 }
 
+    /* ===== Handmade paper texture (background only) ===== */
+body{
+  background:
+    /* soft fiber speckle */
+    radial-gradient(circle at 12% 18%, rgba(31,42,35,.06) 0 1px, transparent 2px),
+    radial-gradient(circle at 78% 30%, rgba(31,42,35,.05) 0 1px, transparent 2px),
+    radial-gradient(circle at 35% 70%, rgba(31,42,35,.04) 0 1px, transparent 2px),
+    radial-gradient(circle at 62% 82%, rgba(31,42,35,.04) 0 1px, transparent 2px),
+
+    /* gentle wash variation */
+    radial-gradient(1200px 560px at 18% 0%, rgba(63,107,74,.14), transparent 60%),
+    radial-gradient(900px 520px at 82% 8%, rgba(176,122,83,.14), transparent 55%),
+
+    /* base */
+    var(--bg) !important;
+
+  background-size:
+    240px 240px,
+    280px 280px,
+    320px 320px,
+    360px 360px,
+    auto,
+    auto,
+    auto;
+
+  background-repeat:
+    repeat,
+    repeat,
+    repeat,
+    repeat,
+    no-repeat,
+    no-repeat,
+    no-repeat;
+}
+
+/* Keep working areas clean (panels stay “paper” without speckle) */
+.bpg-panel,
+.bpg-header__inner,
+.bpg-actions__inner,
+.bpg-preview section{
+  background: var(--card) !important;
+}
+
   </style>
 </head>
 
