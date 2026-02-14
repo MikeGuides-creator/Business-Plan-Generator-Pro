@@ -458,6 +458,37 @@ body{
   background: var(--card) !important;
 }
 
+    /* ===== Improve with AI Buttons (Strong Earth Clay) ===== */
+
+.bpg-section__footer button{
+  border-radius: 18px !important;
+  padding: 13px 18px !important;
+  font-weight: 850 !important;
+  letter-spacing: .02em;
+  box-shadow: 0 14px 32px rgba(31,42,35,.18);
+  transition: all .2s ease;
+}
+
+/* Improve buttons (text-based match — safe + reliable) */
+.bpg-section__footer button:where(:not([data-next])){
+  background: linear-gradient(180deg, #b07a53, #8e6242) !important;
+  color: #fff !important;
+  border: 2px solid #7a5236 !important;
+}
+
+/* Hover */
+.bpg-section__footer button:where(:not([data-next])):hover{
+  transform: translateY(-3px);
+  box-shadow: 0 22px 44px rgba(31,42,35,.26);
+}
+
+/* Next button remains primary sage */
+.bpg-section__footer button[data-next]{
+  background: linear-gradient(180deg, #3f6b4a, #2f5239) !important;
+  color: #fff !important;
+  border: 2px solid #2a4833 !important;
+}
+
   </style>
 </head>
 
