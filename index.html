@@ -1143,6 +1143,15 @@ body::before{
 
 <!-- JS (later) -->
 <script>
+  window.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("button").forEach(btn => {
+      const t = btn.textContent.trim();
+      if (/^Improve .+ with AI$/i.test(t)) btn.dataset.action = "improve-ai";
+    });
+  });
+</script>
+
+<script>  
 (function () {
   // =========================
   // Config
