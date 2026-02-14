@@ -191,6 +191,91 @@ textarea{ resize: vertical; min-height: 90px; }
 .bpg-preview li{ margin:4px 0; }
 .bpg-preview, [data-preview]{ max-width:100%; }
 
+/* Action bar */
+.bpg-actions{
+  position: sticky;
+  bottom: 10px;
+  margin-top: 14px;
+}
+.bpg-actions__inner{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  padding:12px;
+  background: rgba(255,255,255,.82);
+  border:1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+}
+.bpg-actions button{
+  border:1px solid var(--border);
+  background:#fff;
+  padding:10px 12px;
+  border-radius: 12px;
+  cursor:pointer;
+  font-weight:800;
+}
+.bpg-actions button[data-action="copy"]{
+  border-color: rgba(34,197,94,.40);
+  background: rgba(34,197,94,.10);
+}
+aside.bpg-panel.bpg-panel--preview{
+  display: block !important;
+}
+
+/* ===== EARTH-TONE TOKENS + OVERRIDES (paste AFTER base CSS) ===== */
+:root{
+  --bg:#fbf7f0;
+  --card:#fffdf8;
+  --card-2:#f4efe6;
+  --border:#e6dccf;
+  --text:#1f2a23;
+  --muted:#5b6a60;
+  --radius:18px;
+  --shadow:0 10px 30px rgba(31,42,35,.08);
+  --accent:#3f6b4a;
+  --accent-soft:rgba(63,107,74,.12);
+  --accent-ring:0 0 0 4px rgba(63,107,74,.18);
+  --clay:#b07a53;
+}
+
+body{ background:var(--bg); color:var(--text); line-height:1.45; }
+
+.bpg-header__inner{
+  background: linear-gradient(135deg, rgba(63,107,74,.10), rgba(176,122,83,.08));
+}
+
+.bpg-status{ background: rgba(255,253,248,.78); }
+
+input, textarea, select{ background:var(--card); }
+
+input:focus, textarea:focus, select:focus{
+  border-color: rgba(63,107,74,.55);
+  box-shadow: var(--accent-ring);
+}
+
+.bpg-section__footer button,
+.bpg-actions button{ background: var(--card); }
+
+.bpg-actions__inner{ background: rgba(255,253,248,.84); }
+
+.bpg-steps button[aria-current="step"]{
+  border-color: rgba(63,107,74,.40);
+  background: var(--accent-soft);
+}
+.bpg-steps button[data-complete]{
+  border-color: rgba(63,107,74,.35);
+  background: rgba(63,107,74,.08);
+}
+
+.bpg-section__footer button[data-next]{
+  border-color: rgba(63,107,74,.40);
+  background: var(--accent-soft);
+}
+
+.bpg-preview section{ background: rgba(244,239,230,.75); }
+.bpg-preview p{ color: var(--text); }
 </style>
 </head>
 
