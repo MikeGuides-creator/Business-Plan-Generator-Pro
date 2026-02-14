@@ -216,6 +216,61 @@
 
     .bpg-preview section{ background: rgba(244,239,230,.75); }
     .bpg-preview p{ color: var(--text); }
+
+    /* ===== Action Bar: Shape + Stronger Visual Hierarchy ===== */
+
+.bpg-actions__inner{
+  gap: 12px;
+}
+
+/* Base button styling */
+.bpg-actions__inner button{
+  border-radius: 16px !important;
+  padding: 12px 16px !important;
+  font-weight: 800;
+  letter-spacing: .01em;
+  border: 1px solid var(--border) !important;
+  background: var(--card) !important;
+  color: var(--text);
+  box-shadow: 0 12px 28px rgba(31,42,35,.12);
+  transition: all .18s ease;
+  cursor: pointer;
+}
+
+/* Hover polish */
+.bpg-actions__inner button:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(31,42,35,.18);
+}
+
+/* Active press */
+.bpg-actions__inner button:active{
+  transform: translateY(0);
+  box-shadow: 0 10px 22px rgba(31,42,35,.14);
+}
+
+
+/* ===== Stronger Color Hierarchy ===== */
+
+/* Copy Plan (sage soft) */
+.bpg-actions__inner button[data-action="copy"]{
+  background: rgba(63,107,74,.18) !important;
+  border-color: rgba(63,107,74,.50) !important;
+}
+
+/* Download buttons (clay accent) */
+.bpg-actions__inner button[data-action="download-txt"],
+.bpg-actions__inner button[data-action="download-md"]{
+  background: rgba(176,122,83,.20) !important;
+  border-color: rgba(176,122,83,.55) !important;
+}
+
+/* Clear All (refined danger) */
+.bpg-actions__inner button[data-action="clear"]{
+  background: rgba(162,74,58,.18) !important;
+  border-color: rgba(162,74,58,.55) !important;
+}
+
   </style>
 </head>
 
