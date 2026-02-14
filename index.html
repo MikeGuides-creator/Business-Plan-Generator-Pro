@@ -589,6 +589,29 @@ button[data-action="improve-ai"]:hover{
   border-color: rgba(176,122,83,.58) !important;
 }
 
+/* ===== Improve-with-AI button: override inline utility classes ===== */
+.offer-ai-controls button[data-action="improve-ai"],
+button[data-action="improve-ai"]{
+  background: linear-gradient(180deg, #b07a53, #8e6242) !important;
+  color: #fff !important;
+  border: 2px solid #7a5236 !important;
+
+  border-radius: 18px !important;
+  padding: 13px 18px !important;
+
+  font-weight: 850 !important;
+  letter-spacing: .02em !important;
+
+  box-shadow: 0 14px 32px rgba(31,42,35,.18) !important;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.offer-ai-controls button[data-action="improve-ai"]:hover,
+button[data-action="improve-ai"]:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 22px 44px rgba(31,42,35,.26) !important;
+}
+    
   </style>
 </head>
 
