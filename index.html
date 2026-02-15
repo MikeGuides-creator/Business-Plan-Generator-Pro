@@ -683,6 +683,67 @@ button[data-action="improve-ai"]:hover{
   margin-left: auto;
   margin-right: auto;
 }
+
+/* ===== Center top step navigation ===== */
+.bpg-steps{
+  justify-content: center !important;
+}
+
+.bpg-nav{
+  text-align: center;
+}
+
+/* ===== Desktop divider between panels ===== */
+@media (min-width: 800px){
+
+  .bpg-layout{
+    position: relative;
+  }
+
+  .bpg-layout::after{
+    content:"";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    transform: translateX(-0.5px);
+
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(230,220,207,.95) 20%,
+      rgba(230,220,207,.95) 80%,
+      transparent
+    );
+
+    pointer-events: none;
+  }
+}
+
+/* ===== Accent line under title ===== */
+.bpg-header__inner h1{
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.bpg-header__inner h1::after{
+  content:"";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 60px;
+  height: 4px;
+  border-radius: 2px;
+
+  background: linear-gradient(
+    90deg,
+    #3f6b4a,
+    #b07a53
+  );
+}
     
   </style>
 </head>
