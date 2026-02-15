@@ -743,6 +743,15 @@ button[data-action="improve-ai"]:hover{
     #b07a53
   );
 }
+    /* Center steps only on desktop */
+@media (min-width: 800px){
+  .bpg-steps{ justify-content: center !important; }
+  .bpg-nav{ text-align: center; }
+}
+
+@media (max-width: 799px){
+  .bpg-steps{ justify-content: flex-start !important; }
+}
     
   </style>
 </head>
