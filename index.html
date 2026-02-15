@@ -692,7 +692,7 @@ button[data-action="improve-ai"]:hover{
   text-align: center;
 }
 
-/* ===== Desktop divider between panels ===== */
+/* ===== Desktop divider between builder + preview ===== */
 @media (min-width: 800px){
 
   .bpg-layout{
@@ -702,21 +702,21 @@ button[data-action="improve-ai"]:hover{
   .bpg-layout::after{
     content:"";
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 20px;
+    bottom: 20px;
     left: 50%;
     width: 1px;
-    transform: translateX(-0.5px);
 
     background: linear-gradient(
       to bottom,
       transparent,
-      rgba(230,220,207,.95) 20%,
-      rgba(230,220,207,.95) 80%,
+      rgba(230,220,207,.95) 15%,
+      rgba(230,220,207,.95) 85%,
       transparent
     );
 
     pointer-events: none;
+    z-index: 2; /* ensure visible above texture */
   }
 }
 
@@ -751,6 +751,29 @@ button[data-action="improve-ai"]:hover{
 
 @media (max-width: 799px){
   .bpg-steps{ justify-content: flex-start !important; }
+}
+
+/* ===== Accent line under title (match title width) ===== */
+.bpg-header__inner h1{
+  position: relative;
+  display: inline-block;
+  padding-bottom: 12px;
+}
+
+.bpg-header__inner h1::after{
+  content:"";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;              /* matches title width */
+  height: 4px;
+  border-radius: 2px;
+
+  background: linear-gradient(
+    90deg,
+    #3f6b4a,
+    #b07a53
+  );
 }
     
   </style>
