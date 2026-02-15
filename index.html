@@ -737,6 +737,41 @@ button[data-action="improve-ai"]:hover{
 @media (max-width: 799px){
   .bpg-steps{ justify-content: flex-start !important; }
 }
+
+/* ===== Header underline: centered + title width ===== */
+.bpg-header__inner h1{
+  position: relative;
+  display: inline-block;
+  padding-bottom: 12px;
+}
+
+.bpg-header__inner h1::after{
+  content:"";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #3f6b4a, #b07a53);
+}
+    
+/* ===== Desktop divider between columns (background method) ===== */
+@media (min-width: 800px){
+  .bpg-layout{
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(230,220,207,.95) 15%,
+      rgba(230,220,207,.95) 85%,
+      transparent
+    );
+    background-repeat: no-repeat;
+    background-size: 1px 100%;
+    background-position: center;
+  }
+}
     
   </style>
 </head>
