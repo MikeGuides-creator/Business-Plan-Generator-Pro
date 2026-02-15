@@ -692,19 +692,18 @@ button[data-action="improve-ai"]:hover{
   text-align: center;
 }
 
-/* ===== Desktop divider between columns (bulletproof) ===== */
+/* ===== Desktop divider between columns (stronger but refined) ===== */
 @media (min-width: 800px){
   .bpg-layout{
-    /* a centered 1px line that fades top/bottom */
     background-image: linear-gradient(
       to bottom,
       transparent,
-      rgba(230,220,207,.95) 15%,
-      rgba(230,220,207,.95) 85%,
+      rgba(210,195,178,.95) 15%,
+      rgba(210,195,178,.95) 85%,
       transparent
     );
     background-repeat: no-repeat;
-    background-size: 1px 100%;
+    background-size: 2px 100%;   /* thicker */
     background-position: center;
   }
 }
