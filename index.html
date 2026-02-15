@@ -692,31 +692,20 @@ button[data-action="improve-ai"]:hover{
   text-align: center;
 }
 
-/* ===== Desktop divider between builder + preview ===== */
+/* ===== Desktop divider between columns (bulletproof) ===== */
 @media (min-width: 800px){
-
   .bpg-layout{
-    position: relative;
-  }
-
-  .bpg-layout::after{
-    content:"";
-    position: absolute;
-    top: 20px;
-    bottom: 20px;
-    left: 50%;
-    width: 1px;
-
-    background: linear-gradient(
+    /* a centered 1px line that fades top/bottom */
+    background-image: linear-gradient(
       to bottom,
       transparent,
       rgba(230,220,207,.95) 15%,
       rgba(230,220,207,.95) 85%,
       transparent
     );
-
-    pointer-events: none;
-    z-index: 2; /* ensure visible above texture */
+    background-repeat: no-repeat;
+    background-size: 1px 100%;
+    background-position: center;
   }
 }
 
