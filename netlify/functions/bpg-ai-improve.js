@@ -7,7 +7,7 @@ export async function handler(event) {
       body: JSON.stringify({ error: "Method Not Allowed" }),
     };
   }
- 
+
   try {
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
@@ -17,11 +17,11 @@ export async function handler(event) {
         body: JSON.stringify({ error: "Missing OPENAI_API_KEY env var" }),
       };
     }
- 
+
     const body = JSON.parse(event.body || "{}");
     const instructions = String(body.instructions || "").trim();
     const input = String(body.input || "").trim();
- 
+
     if (!input) {
       return {
         statusCode: 400,
@@ -29,10 +29,10 @@ export async function handler(event) {
         body: JSON.stringify({ error: "Missing input" }),
       };
     }
- 
+
     // Model is configurable via Netlify env vars
     const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
- 
+
     // Standard chat completions endpoint — works on all OpenAI accounts
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -52,9 +52,9 @@ export async function handler(event) {
         temperature: 0.7,
       }),
     });
- 
+
     const data = await r.json();
- 
+
     if (!r.ok) {
       return {
         statusCode: r.status,
@@ -65,16 +65,16 @@ export async function handler(event) {
         }),
       };
     }
- 
+
     // Pull the text out of the standard response shape
     const text = data.choices?.[0]?.message?.content || "";
- 
+
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text: String(text).trim() }),
     };
- 
+
   } catch (err) {
     return {
       statusCode: 500,
@@ -86,4 +86,3 @@ export async function handler(event) {
     };
   }
 }
- 
